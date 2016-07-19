@@ -1,0 +1,53 @@
+.grid{
+    position: relative;
+    height : 100%;
+
+    .row{
+        margin-bottom : 20px;
+        div{
+            margin : 0px auto;
+            float: none;
+        }
+
+        .posted{
+            color:white;
+            text-align:center;
+        }
+    }
+
+    .pagination {
+        text-align: center;
+    }
+}
+
+.post{
+    .bootstrap-tagsinput{
+        width : 100%;
+        display: block;
+
+        input{
+            width : 50px;
+        }
+    }
+
+    .post-now{
+        margin-right : 5px;
+    }
+
+    .post-now, .delete-now{
+        margin-top: 15px;
+        display : none;
+    }
+
+    h3{
+        display: inline-block;
+    }
+
+    &:hover{
+        .post-now,.delete-now{
+            display: inline-block;
+        }
+    }
+}
+
+

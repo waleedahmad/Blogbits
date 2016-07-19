@@ -1,0 +1,43 @@
+html,body{
+    height : 100%;
+    width : 100%;
+    margin : 0px;
+    padding : 0px;
+}
+
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+
+    @import "navbar";
+
+    background  : #36465d;
+
+    .navbar{
+        border-radius : 0px;
+    }
+
+    a:hover {
+        cursor:pointer;
+    }
+
+    #flash-message{
+        position: absolute;
+        top: 60px;
+        margin-left : auto;
+        margin-right : auto;
+        display: none;
+        width : 580px;
+
+        i{
+            margin-right : 10px;
+        }
+    }
+}
+
+
+@import "authentication";
+@import "posts";
+@import "config";

@@ -1,0 +1,35 @@
+{
+  "name": "blogbits",
+  "description": "Content Management Assistant for Social Platforms",
+  "main": "Gruntfile.js",
+  "authors": [
+    "Waleed Ahmad <waleedgplus@gmail.com> (https://waleedahmad.com/\")"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "Blog",
+    "Social",
+    "Tumblr",
+    "Poster",
+    "Content",
+    "Manager"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/assets/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.6.3",
+    "masonry": "^4.1.0",
+    "jscroll": "^2.3.5",
+    "imagesloaded": "^4.1.0",
+    "bootstrap-tagsinput": "^0.8.0",
+    "toastr": "^2.1.2"
+  }
+}
