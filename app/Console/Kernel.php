@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Config;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,11 +25,31 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $time = $this->getSchedulerTimings();
         $schedule->command('posts:publish')
-                ->everyThirtyMinutes()
+                ->{$this->getSchedulerFrequency()}()
                 ->timezone('Asia/Karachi')
-                ->when(function () {
-                    return date('H') >= 0 && date('H') <= 5;
+                ->when(function () use ($time){
+                    return date('H') >= $time['start'] && date('H') <= $time['end'];
                 });
+    }
+
+    /**
+     * Get Post Frequency
+     * @return mixed
+     */
+    protected function getSchedulerFrequency(){
+        return Config::where('name', '=', 'scheduler_frequency')->first()->value;
+    }
+
+    /**
+     * Get Scheduler Start/End Timings
+     * @return array
+     */
+    protected function getSchedulerTimings(){
+        return [
+            'start' =>  Config::where('name', '=', 'scheduler_start_time')->first()->value,
+            'end'   =>  Config::where('name', '=', 'scheduler_end_time')->first()->value
+        ];
     }
 }

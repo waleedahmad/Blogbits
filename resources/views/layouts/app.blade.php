@@ -27,6 +27,7 @@
 <script type="text/javascript" src="assets/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <script type="text/javascript" src="assets/lib/jscroll/jquery.jscroll.min.js"></script>
 <script type="text/javascript" src="assets/lib/toastr/toastr.min.js"></script>
+<script type="text/javascript" src="assets/lib/jt.timepicker/jquery.timepicker.min.js"></script>
 @if(env('APP_ENV') === 'local')
     <script type="text/javascript" src="assets/js/app.js"></script>
 @else

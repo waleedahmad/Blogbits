@@ -90,23 +90,23 @@ class Posts{
                 if(res){
                     $(this).unbind('click');
                     toastr.success('Post batch posted...');
-                    $(".row:lt(5)").slideUp();
+                    _this.removePostBatchFromDOM();
                 }
             }
         });
     }
 
     /**
-     * Show action status message
-     * @param message
-     * @param rm_class
-     * @param add_class
-     * @param icon
+     * Remove posted post batch from DOM
      */
-    showMessage(message, rm_class, add_class, icon){
-        var _this = this;
-        this.flash_message.removeClass(rm_class);
-        this.flash_message.html('<i class="fa '+icon+'" aria-hidden="true"> </i> ' + message).addClass(add_class).slideDown('fast');
+    removePostBatchFromDOM(){
+        $.ajax({
+            type : 'GET',
+            url : '/config/posts/batchLimit',
+            success : function(res){
+                $(`.row:lt(${res.batch_limit})`).slideUp();
+            }
+        });
     }
 
     /**

@@ -19,6 +19,16 @@ body{
         border-radius : 0px;
     }
 
+    .nav-tabs{
+        li a{
+            color:white;
+
+            &:hover{
+                color :#36465d;
+            }
+        }
+    }
+
     a:hover {
         cursor:pointer;
     }
@@ -41,3 +51,4 @@ body{
 @import "authentication";
 @import "posts";
 @import "config";
+@import "jquery.timepicker";

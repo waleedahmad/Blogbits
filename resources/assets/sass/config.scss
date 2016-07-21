@@ -1,6 +1,15 @@
 .config{
-    border-radius : 5px;
+    min-height: 400px;
     height : auto;
     background-color:white;
     padding: 20px;
+    margin-bottom : 50px;
+
+    .form-inline{
+        margin-top: 50px;
+
+        input{
+            margin : 0px 10px 0px 10px;
+        }
+    }
 }

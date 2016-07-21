@@ -4,7 +4,6 @@ Route::auth();
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'ContentController@index');
-
     Route::get('/content/sync', 'SyncController@syncData');
     Route::delete('/content/delete', 'ContentController@deletePost');
     Route::post('/content/post', 'APIController@publishPost');
@@ -12,7 +11,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/content/user/followers', 'APIController@getClient');
     Route::delete('/content/deleteAll', 'ContentController@deleteAllPosts');
     Route::post('/content/update/tags', 'ContentController@updateTags');
-    Route::any('/config', 'ConfigController@config');
+    Route::get('/config/', 'ConfigController@configView');
+    Route::post('/config/user', 'ConfigController@userConfig');
+    Route::post('/config/scheduler/timings', 'ConfigController@updateSchedulerTimings');
+    Route::post('/config/{type}', 'ConfigController@config');
+    Route::get('/config/posts/batchLimit','ConfigController@getBatchPostLimit');
 });
 
 Route::group([

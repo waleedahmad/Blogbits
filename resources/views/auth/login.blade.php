@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Login - BlogBits</title>
+@endsection
+
 @section('content')
     <div class="loginform">
         <form class="form" method="POST" action="{{ url('/login') }}">
@@ -14,8 +18,6 @@
                 @endif
             </div>
 
-
-
             <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                 <input type="password" class="form-control" name="password" value="{{ old('password') }}" placeholder="password">
                 @if ($errors->has('password'))
@@ -29,7 +31,6 @@
                         <input type="checkbox" id="remember" name="remember"> Remember me
                     </label>
                 </div>
-
                 <button class="btn btn-default" type="submit">Log in</button>
             </div>
 

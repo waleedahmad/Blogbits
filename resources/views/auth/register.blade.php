@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Registration - BlogBits</title>
+@endsection
+
 @section('content')
 <div class="registerform">
 

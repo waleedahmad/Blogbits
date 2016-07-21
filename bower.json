@@ -30,6 +30,7 @@
     "jscroll": "^2.3.5",
     "imagesloaded": "^4.1.0",
     "bootstrap-tagsinput": "^0.8.0",
-    "toastr": "^2.1.2"
+    "toastr": "^2.1.2",
+    "jt.timepicker": "^1.11.1"
   }
 }

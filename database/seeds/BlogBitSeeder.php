@@ -15,40 +15,65 @@ class BlogBitSeeder extends Seeder
         Config::truncate();
         
         Config::create([
-            'name'   =>  'active_blog',
-            'value' => env('TUMBLR_BLOG', '')
+            'name'      =>  'active_blog',
+            'value'     =>  env('TUMBLR_BLOG', ''),
+            'type'      =>  'blog'
         ]);
 
         Config::create([
-            'name'   =>  'post_link',
-            'value' => env('POST_LINK', '')
-        ]);
-
-
-        Config::create([
-            'name'   =>  'pinterest',
-            'value' => env('PINTEREST', '')
+            'name'      =>  'post_link',
+            'value'     => env('POST_LINK', ''),
+            'type'      =>  'blog'
         ]);
 
 
         Config::create([
-            'name'   =>  'facebook',
-            'value' => env('FACEBOOK', '')
+            'name'      =>  'pinterest',
+            'value'     =>  env('PINTEREST', ''),
+            'type'      =>  'blog'
+        ]);
+
+
+        Config::create([
+            'name'      =>  'facebook',
+            'value'     =>  env('FACEBOOK', ''),
+            'type'      =>  'blog'
         ]);
 
         Config::create([
-            'name'   =>  'sync_folder',
-            'value' => env('SYNC_FOLDER', '')
+            'name'      =>  'sync_folder',
+            'value'     =>  env('SYNC_FOLDER', ''),
+            'type'      =>  'blog'
         ]);
 
         Config::create([
-            'name'  =>  'default_tags',
-            'value' =>  'models'
+            'name'      =>  'default_tags',
+            'value'     =>  'models',
+            'type'      =>  'blog'
         ]);
 
         Config::create([
-            'name'  =>  'batch_post_limit',
-            'value' =>  5
+            'name'      =>  'batch_post_limit',
+            'value'     =>  5,
+            'type'      =>  'scheduler'
+        ]);
+
+        Config::create([
+            'name'      =>  'scheduler_frequency',
+            'value'     =>  'hourly',
+            'type'      =>  'scheduler'
+        ]);
+
+        Config::create([
+            'name'      =>  'scheduler_start_time',
+            'value'     =>  0,
+            'type'      =>  'scheduler'
+        ]);
+
+        Config::create([
+            'name'      =>  'scheduler_end_time',
+            'value'     =>  23,
+            'type'      =>  'scheduler'
         ]);
     }
 }
