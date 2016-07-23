@@ -93,7 +93,15 @@ class ConfigController extends Controller
             'scheduler_frequency' => Config::where('name', '=', 'scheduler_frequency')->first()->value,
             'scheduler_start_time' => Config::where('name', '=', 'scheduler_start_time')->first()->value,
             'scheduler_end_time' => Config::where('name', '=', 'scheduler_end_time')->first()->value,
-            'user_email' => Auth::user()->email
+            'user_email' => Auth::user()->email,
+            'frequencies' => [
+                'everyMinute',
+                'everyFiveMinutes',
+                'everyTenMinutes',
+                'everyThirtyMinutes',
+                'hourly'
+            ]
+            
         ];
     }
 

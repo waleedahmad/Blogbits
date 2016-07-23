@@ -65,19 +65,10 @@
                     <form action="/config/scheduler" method="POST">
 
                         <div class="form-group">
-                            <?php
-                                $frequencies = [
-                                    'everyMinute',
-                                    'everyFiveMinutes',
-                                    'everyTenMinutes',
-                                    'everyThirtyMinutes',
-                                    'hourly'
-                                ];
-                            ?>
                             <label>Scheduler Frequency</label>
                             <select class="form-control" name="scheduler_frequency" value="{{$config['scheduler_frequency']}}">
 
-                                @foreach($frequencies as $frequency)
+                                @foreach($config['frequencies'] as $frequency)
                                     @if($config['scheduler_frequency'] === $frequency)
                                         <option value="{{$frequency}}" selected="selected">{{ucfirst(join(preg_split('/(?<=[a-z])(?=[A-Z])/x', $frequency), " " ))}}</option>
                                     @else
