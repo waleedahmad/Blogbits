@@ -79,7 +79,7 @@ class APIController extends Controller
             'type'      =>  'photo',
             'tags'      =>  $post->tags,
             'slug'      =>  $post->caption,
-            'caption'   =>  '<a href="'.$config['facebook'].'">'.$post->caption.'</a>',
+            'caption'   =>  '<a href="'.$config['post_link'].'">'.$post->caption.'</a>',
             'data64'    =>  base64_encode($this->getImage($post->file_name)),
             'link'      =>  $config['post_link'],
             'source_url'    =>  'http://'.$config['active_blog']

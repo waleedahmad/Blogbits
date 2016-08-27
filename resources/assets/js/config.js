@@ -50,26 +50,22 @@ class Config{
             var start = _this.getSchedulerStartTime(),
                 end = _this.getSchedulerEndTime();
 
-            if(start < end){
-                $.ajax({
-                    type : 'POST',
-                    url : '/config/scheduler/timings',
-                    data : {
-                        _token : _this.token,
-                        start : start,
-                        end : end
-                    },
-                    success : function(res){
-                        if(res){
-                            toastr.success('Scheduler timings updated');
-                        }else{
-                            toastr.error('Unable to update Scheduler timings');
-                        }
+            $.ajax({
+                type : 'POST',
+                url : '/config/scheduler/timings',
+                data : {
+                    _token : _this.token,
+                    start : start,
+                    end : end
+                },
+                success : function(res){
+                    if(res){
+                        toastr.success('Scheduler timings updated');
+                    }else{
+                        toastr.error('Unable to update Scheduler timings');
                     }
-                })
-            }else{
-                toastr.error('Invalid time durations');
-            }
+                }
+            });
         });
     }
 

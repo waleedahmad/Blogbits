@@ -27,7 +27,7 @@ class SyncController extends Controller
                 $this->removeFile($image);
             }
         }
-
+        
         return response()->json(true);
     }
 

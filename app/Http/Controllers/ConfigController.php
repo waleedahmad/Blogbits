@@ -149,7 +149,7 @@ class ConfigController extends Controller
         ];
 
         if ($password) {
-            $userUpdate['password'] = $password;
+            $userUpdate['password'] = bcrypt($password);
         }
 
         return $userUpdate;
