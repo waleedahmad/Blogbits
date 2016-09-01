@@ -11,11 +11,20 @@ use Tumblr\API\Client;
 class ContentController extends Controller
 {
     /**
-     * Render posts
+     * Render tumblr posts
      * @return $this
      */
-    public function index(){
-        $posts = Post::simplePaginate(10);
+    public function blogContent(){
+        $posts = Post::where('type','=','blog')->simplePaginate(10);
+        return view('index')->with('posts', $posts);
+    }
+
+    /**
+     * Render social posts
+     * @return $this
+     */
+    public function socialContent(){
+        $posts = Post::where('type','=','social')->simplePaginate(10);
         return view('index')->with('posts', $posts);
     }
     
@@ -31,7 +40,7 @@ class ContentController extends Controller
         if($post->count()){
             $post = $post->first();
 
-            if($this->deleteImage($post->file_name)){
+            if($this->deleteImage($post->file_name, $post->type)){
                 if($post->delete()){
                     return response()->json(true);
                 }
@@ -43,16 +52,17 @@ class ContentController extends Controller
 
     /**
      * Delete all posts
+     * @param $type
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteAllPosts(){
-        $posts = Post::all();
+    public function deleteAllPosts($type){
+        $posts = Post::where('type','=', $type)->get();
 
         foreach($posts as $post){
-            $this->deleteImage($post->file_name);
+            $this->deleteImage($post->file_name, $post->type);
         }
 
-        if(Post::truncate()){
+        if(Post::where('type','=',$type)->delete()){
             return response()->json(true);
         }
 
@@ -62,10 +72,11 @@ class ContentController extends Controller
     /**
      * Removes image from storage
      * @param $name
+     * @param $type
      * @return mixed
      */
-    public function deleteImage($name){
-        return Storage::disk('local')->delete('/public/posts/'.$name);
+    public function deleteImage($name, $type){
+        return Storage::disk('local')->delete('/public/posts/'.$type.'/'.$name);
     }
 
     public function updateTags(Request $request){

@@ -15,8 +15,8 @@ class Config{
      * Get scheduler start time
      * @returns {*}
      */
-    getSchedulerStartTime(){
-        var value = $.trim($("#scheduler_start_time").val());
+    getSchedulerStartTime(target){
+        var value = $.trim($(target).val());
         return (value) ? parseInt(value.match(/\d+/)[0]) : 0;
     }
 
@@ -24,8 +24,8 @@ class Config{
      * Get scheduler end time
      * @returns {*}
      */
-    getSchedulerEndTime(){
-        var value = $.trim($("#scheduler_end_time").val());
+    getSchedulerEndTime(target){
+        var value = $.trim($(target).val());
         return (value) ? parseInt(value.match(/\d+/)[0]) : 0;
     }
 
@@ -34,7 +34,7 @@ class Config{
      * @param _this
      */
     initSchedulerTimings(_this){
-        $('#scheduler_start_time, #scheduler_end_time').timepicker({
+        $('#scheduler_start_time, #scheduler_end_time, #social_scheduler_start_time, #social_scheduler_end_time').timepicker({
             'timeFormat': 'H:i',
             'step': function(i) {
                 return 60;
@@ -44,11 +44,24 @@ class Config{
         });
 
         // update scheduler timings
-        $("#up-sch-timings").on('click', function(e){
+        $("#up-sch-timings, #up-sch-timings-social").on('click', function(e){
             e.preventDefault();
 
-            var start = _this.getSchedulerStartTime(),
-                end = _this.getSchedulerEndTime();
+            var type = $(this).attr('data-type');
+
+            var start_target;
+            var end_target;
+
+            if(type === 'blog'){
+                start_target = '#scheduler_start_time';
+                end_target = '#scheduler_end_time'
+            }else if(type === 'social'){
+                start_target = '#social_scheduler_start_time';
+                end_target = '#social_scheduler_end_time'
+            }
+
+            var start = _this.getSchedulerStartTime(start_target),
+                end = _this.getSchedulerEndTime(end_target);
 
             $.ajax({
                 type : 'POST',
@@ -56,7 +69,8 @@ class Config{
                 data : {
                     _token : _this.token,
                     start : start,
-                    end : end
+                    end : end,
+                    type : type
                 },
                 success : function(res){
                     if(res){
@@ -69,11 +83,32 @@ class Config{
         });
     }
 
+    initFbAlbumSync(_this){
+        $("#sync-fb-albums").on('click', function(e){
+
+            e.preventDefault();
+
+            $.ajax({
+                type : 'POST',
+                url : '/social/sync/fbAlbums',
+                data : {
+                    _token : _this.token
+                },
+                success : function(res){
+                    if(res){
+                        toastr.success('Facebook albums synced');
+                    }
+                }
+            })
+        });
+    }
+
     constructor(){
         var _this = this;
         this.token = $("meta[name=csrf_token]").attr('content');
         this.initHashNavigate();
         this.initSchedulerTimings(this);
+        this.initFbAlbumSync(this);
     }
 }
 

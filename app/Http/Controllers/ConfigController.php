@@ -39,6 +39,12 @@ class ConfigController extends Controller
                         return redirect('/config#scheduler');
                     }
                     break;
+                case 'social':
+                    if ($this->updateConfig($request->all(), $type)) {
+                        session()->flash('scheduler_flash', 'Social config updated.');
+                        return redirect('/config#social');
+                    }
+                    break;
                 default:
                     return redirect('/config');
             }
@@ -54,8 +60,7 @@ class ConfigController extends Controller
     public function updateConfig($config, $type)
     {
         foreach ($this->getConfigProps($type) as $prop) {
-
-            if($prop === 'scheduler_start_time' || $prop === 'scheduler_end_time'){
+            if($prop === 'scheduler_start_time' || $prop === 'scheduler_end_time' || $prop === 'social_scheduler_start_time' || $prop === 'social_scheduler_end_time'){
                 $config[$prop] = intval(substr($config[$prop], 0, 2));
             }
 
@@ -93,6 +98,16 @@ class ConfigController extends Controller
             'scheduler_frequency' => Config::where('name', '=', 'scheduler_frequency')->first()->value,
             'scheduler_start_time' => Config::where('name', '=', 'scheduler_start_time')->first()->value,
             'scheduler_end_time' => Config::where('name', '=', 'scheduler_end_time')->first()->value,
+
+            'facebook_pageid' => Config::where('name', '=', 'facebook_pageid')->first()->value,
+            'pinterest_username' => Config::where('name', '=', 'pinterest_username')->first()->value,
+            'pinterest_board' => Config::where('name', '=', 'pinterest_board')->first()->value,
+            'pinterest_token' => Config::where('name', '=', 'pinterest_token')->first()->value,
+            'social_sync_folder' => Config::where('name', '=', 'social_sync_folder')->first()->value,
+            'social_scheduler_frequency' => Config::where('name', '=', 'social_scheduler_frequency')->first()->value,
+            'social_scheduler_start_time' => Config::where('name', '=', 'social_scheduler_start_time')->first()->value,
+            'social_scheduler_end_time' => Config::where('name', '=', 'social_scheduler_end_time')->first()->value,
+
             'user_email' => Auth::user()->email,
             'frequencies' => [
                 'everyMinute',
@@ -205,9 +220,11 @@ class ConfigController extends Controller
 
     public function updateSchedulerTimings(Request $request){
 
-        return Config::where('name', '=', 'scheduler_start_time')->update([
+        $social = ($request->input('type') === 'social') ? 'social_' : '';
+
+        return Config::where('name', '=', $social.'scheduler_start_time')->update([
             'value'  =>  $request->input('start')
-        ]) && Config::where('name', '=', 'scheduler_end_time')->update([
+        ]) && Config::where('name', '=', $social.'scheduler_end_time')->update([
             'value'    =>  $request->input('end')
         ]) ? response()->json(true) : response()->json(false);
     }

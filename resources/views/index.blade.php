@@ -15,12 +15,11 @@
                         <div class="caption">
                             <h3>{{substr($post->caption,0,30)}}</h3>
                             <button data-id="{{$post->id}}" class="btn btn-danger btn-sm pull-right delete-now">Delete</button>
-                            <button data-id="{{$post->id}}" class="btn btn-primary btn-sm pull-right post-now">Post Now</button>
+                            <button data-id="{{$post->id}}" data-type="{{$post->type}}" class="btn btn-primary btn-sm pull-right post-now">Post Now</button>
                         </div>
 
                         <div class="actions">
                             <input type="text" class="form-control tags" data-id={{$post->id}} data-role="tagsinput" value="{{$post->tags}}" required>
-
                         </div>
                     </div>
                 </div>

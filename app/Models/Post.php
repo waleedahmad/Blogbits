@@ -8,5 +8,5 @@ class Post extends Model
 {
     protected $table = 'posts';
 
-    protected $fillable = ['caption', 'file_name', 'uri', 'tags'];
+    protected $fillable = ['caption', 'file_name', 'uri', 'tags', 'type'];
 }

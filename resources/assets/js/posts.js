@@ -116,7 +116,8 @@ class Posts{
     createPost(e){
         var _this = e.data.context;
         var post_now = $(this),
-            post_id = $(this).attr('data-id');
+            post_id = $(this).attr('data-id'),
+            type = $(this).attr('data-type');
 
         $(this).unbind('click');
 
@@ -124,7 +125,7 @@ class Posts{
 
         $.ajax({
             type : 'POST',
-            url : '/content/post',
+            url : '/content/post/'+type,
             data : {
                 _token : _this.token,
                 post_id : post_id

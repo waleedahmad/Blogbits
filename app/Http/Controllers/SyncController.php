@@ -15,19 +15,36 @@ class SyncController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function syncData(){
-        $images = $this->getAllImages();
+        $images = $this->getAllImages('blog');
 
         shuffle($images);
 
         foreach ($images as $image) {
             if($this->isExtAllowed($image) && $this->getFileSizeMB($image) < 10){
-                $this->createPost($image);
+                $this->createPost($image, 'blog');
                 $this->removeFile($image);
             }else{
                 $this->removeFile($image);
             }
         }
         
+        return response()->json(true);
+    }
+
+    public function syncSocialData(){
+        $images = $this->getAllImages('social');
+
+        shuffle($images);
+
+        foreach ($images as $image) {
+            if($this->isExtAllowed($image) && $this->getFileSizeMB($image) < 10){
+                $this->createPost($image, 'social');
+                $this->removeFile($image);
+            }else{
+                $this->removeFile($image);
+            }
+        }
+
         return response()->json(true);
     }
 
@@ -44,25 +61,27 @@ class SyncController extends Controller
     /**
      * Create a new post
      * @param $image
+     * @param $type
      * @return bool
      */
-    public function createPost($image){
+    public function createPost($image, $type){
 
         $caption=   $this->getSafeImageName($image);
         $ext    = 	$this->getFileExtension($image);
         $id     =   $this->getRandomID();
-        $uri 	= 	'/uploads/'.$id.'.'.$ext;
+        $uri 	= 	'/uploads/'.$type.'/'.$id.'.'.$ext;
         $tags   =   $caption. ','.Config::where('name','=', 'default_tags')->first()->value;
 
         $post = new Post([
             'caption'   =>  $caption,
             'file_name' =>  $id.'.'.$ext,
             'uri'       =>  $uri,
-            'tags'      =>  $tags
+            'tags'      =>  $tags,
+            'type'      =>  $type
         ]);
 
         if($post->save()){
-            $this->saveFile($image, $id, $ext);
+            $this->saveFile($image, $id, $ext, $type);
             return true;
         }
         return false;
@@ -73,9 +92,10 @@ class SyncController extends Controller
      * @param $file
      * @param $id
      * @param $ext
+     * @param $type
      */
-    public function saveFile($file, $id, $ext){
-        Storage::disk('local')->put('/public/posts/'.$id.'.'.$ext,  File::get($file));
+    public function saveFile($file, $id, $ext, $type){
+        Storage::disk('local')->put('/public/posts/'.$type.'/'.$id.'.'.$ext,  File::get($file));
     }
 
     /**
@@ -106,10 +126,17 @@ class SyncController extends Controller
 
     /**
      * Get all images from sync folder
+     * @param $type
      * @return mixed
      */
-    public function getAllImages(){
-        return File::allFiles(env('SYNC_FOLDER'));
+    public function getAllImages($type){
+        if($type === 'blog'){
+            return File::allFiles(env('SYNC_FOLDER'));
+        }
+
+        if($type === 'social'){
+            return File::allFiles(env('SOCIAL_SYNC_FOLDER'));
+        }
     }
 
     /**

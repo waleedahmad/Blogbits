@@ -82,7 +82,7 @@ class AuthController extends Controller
      */
     public function redirectToFacebookProvider()
     {
-        return Socialite::driver('facebook')->redirect();
+        return Socialite::driver('facebook')->scopes(["publish_actions, manage_pages", "publish_pages"])->redirect();
     }
 
     /**
@@ -157,8 +157,9 @@ class AuthController extends Controller
             if($provider === 'facebook'){
                 if(!$authUser->facebook_id){
                     $authUser->facebook_id = $user->id;
-                    $authUser->save();
                 }
+                $authUser->token = $user->token;
+                $authUser->save();
             }
             return $authUser;
         }

@@ -5,7 +5,7 @@
     <meta name="csrf_token" content="{{csrf_token()}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/lib/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="assets/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">

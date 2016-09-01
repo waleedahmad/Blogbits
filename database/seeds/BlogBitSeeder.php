@@ -13,6 +13,10 @@ class BlogBitSeeder extends Seeder
     public function run()
     {
         Config::truncate();
+
+        /**
+         * Blog Config
+         */
         
         Config::create([
             'name'      =>  'active_blog',
@@ -52,6 +56,10 @@ class BlogBitSeeder extends Seeder
             'type'      =>  'blog'
         ]);
 
+        /**
+         * Blog Scheduler config
+         */
+
         Config::create([
             'name'      =>  'batch_post_limit',
             'value'     =>  5,
@@ -74,6 +82,58 @@ class BlogBitSeeder extends Seeder
             'name'      =>  'scheduler_end_time',
             'value'     =>  23,
             'type'      =>  'scheduler'
+        ]);
+
+        /**
+         * Social Config
+         */
+
+        Config::create([
+            'name'      =>  'social_scheduler_frequency',
+            'value'     =>  'hourly',
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'social_scheduler_start_time',
+            'value'     =>  0,
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'social_scheduler_end_time',
+            'value'     =>  23,
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'facebook_pageid',
+            'value'     =>  env('FACEBOOK_PAGE_ID', ''),
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'pinterest_username',
+            'value'     =>  env('PINTEREST_USERNAME', ''),
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'pinterest_board',
+            'value'     =>  env('PINTEREST_BOARD', ''),
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'pinterest_token',
+            'value'     =>  env('PINTEREST_TOKEN', ''),
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'social_sync_folder',
+            'value'     =>  env('SOCIAL_SYNC_FOLDER', ''),
+            'type'      =>  'social'
         ]);
     }
 }
