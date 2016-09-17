@@ -17,7 +17,7 @@ class BlogBitSeeder extends Seeder
         /**
          * Blog Config
          */
-        
+
         Config::create([
             'name'      =>  'active_blog',
             'value'     =>  env('TUMBLR_BLOG', ''),

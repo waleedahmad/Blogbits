@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Models\Config;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Schema;
 
 class Kernel extends ConsoleKernel
 {
@@ -25,13 +26,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $time = $this->getSchedulerTimings();
-        $schedule->command('posts:publish')
+        if(Schema::hasTable('config') && Config::count()){
+            $time = $this->getSchedulerTimings();
+            $schedule->command('posts:publish')
                 ->{$this->getSchedulerFrequency()}()
                 ->timezone('Asia/Karachi')
                 ->when(function () use ($time){
                     return date('H') >= $time['start'] && date('H') <= $time['end'];
                 });
+        }
     }
 
     /**
