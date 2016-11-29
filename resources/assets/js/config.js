@@ -103,13 +103,36 @@ class Config{
         });
     }
 
+    initPostBackup(_this) {
+        $("#backup-content").on('click', function(e){
+            e.preventDefault();
+            console.log("Backup");
+
+            $.ajax({
+                type : 'POST',
+                'url' : '/content/backup',
+                data : {
+                    _token : _this.token
+                },
+                success : function(res){
+                    if(res){
+                        toastr.success('All Photos backed up!');
+                    }
+                }
+            });
+        });
+    }
+
     constructor(){
         var _this = this;
         this.token = $("meta[name=csrf_token]").attr('content');
         this.initHashNavigate();
         this.initSchedulerTimings(this);
         this.initFbAlbumSync(this);
+        this.initPostBackup(this);
     }
+
+
 }
 
 new Config();

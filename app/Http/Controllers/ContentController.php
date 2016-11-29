@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Tumblr\API\Client;
 
@@ -79,6 +80,10 @@ class ContentController extends Controller
         return Storage::disk('local')->delete('/public/posts/'.$type.'/'.$name);
     }
 
+    /**
+     * @param Request $request
+     * Update blog post tags
+     */
     public function updateTags(Request $request){
         $tags = $request->input('tags');
         $post_id = $request->input('post_id');
@@ -88,6 +93,11 @@ class ContentController extends Controller
         ]);
     }
 
+    /**
+     * Edit posts
+     * @param $id
+     * @return $this
+     */
     public function editPost($id){
         $post = Post::where('id', '=', $id)->first();
         return view('edit_post')->with('post' , $post);
@@ -102,5 +112,54 @@ class ContentController extends Controller
         ])){
             return redirect('/');
         }
+    }
+
+    /**
+     * Backup all posts to sync folders
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function backupAllPosts(){
+        $posts = Post::all();
+
+        foreach($posts as $post){
+            $post->delete();
+            if(File::move(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name , $this->getUniqueFileName($post->caption, $post->file_name, $post->type,1))){
+                $post->delete();
+            }
+        }
+
+        Post::truncate();
+
+        return response()->json(true);
+    }
+
+    /**
+     * Returns unique file name after checking in source location
+     * @param $caption
+     * @param $filename
+     * @param $type
+     * @param $counter
+     * @return mixed|string
+     */
+    public function getUniqueFileName($caption, $filename, $type, $counter){
+        $sync_folder = env('SYNC_FOLDER');
+        $social_sync_folder = env('SOCIAL_SYNC_FOLDER');
+
+        $path = ($type === 'blog') ? $sync_folder.'/' : $social_sync_folder;
+        $path = $path.'/'.$caption.$counter.$this->getExtensionFromFileName($filename);
+
+        if(File::exists($path)) {
+            return $this->getUniqueFileName($caption, $filename, $type, $counter + 1);
+        }
+        return $path;
+    }
+
+    /**
+     * Get extension from filename
+     * @param $name
+     * @return string
+     */
+    public function getExtensionFromFileName($name){
+        return '.'.File::extension($name);
     }
 }

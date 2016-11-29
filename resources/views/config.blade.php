@@ -142,7 +142,16 @@
                                 <div class="alert alert-success" role="alert">{{Session::get('account_flash')}}</div>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-default">Update</button>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Update</button>
+                        </div>
+
+                        <div class="form-group">
+                            <h4>Backup All Content</h4>
+
+                            <button class="btn btn-default" id="backup-content">Backup Posts</button>
+                        </div>
                     </form>
                 </div>
             </div>

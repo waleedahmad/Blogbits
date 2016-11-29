@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/content/user/followers', 'APIController@getClient');
     Route::delete('/content/deleteAll/{type}', 'ContentController@deleteAllPosts');
     Route::post('/content/update/tags', 'ContentController@updateTags');
+    Route::post('/content/backup', 'ContentController@backupAllPosts');
     Route::get('/config/', 'ConfigController@configView');
     Route::post('/config/user', 'ConfigController@userConfig');
     Route::post('/config/scheduler/timings', 'ConfigController@updateSchedulerTimings');
@@ -25,7 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/albums', 'APIController@syncFacebookAlbums');
 
-    Route::get('/info','APIController@getInfo');
+
 });
 
 Route::group([
