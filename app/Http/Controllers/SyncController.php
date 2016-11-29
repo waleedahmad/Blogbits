@@ -37,7 +37,7 @@ class SyncController extends Controller
         shuffle($images);
 
         foreach ($images as $image) {
-            if($this->isExtAllowed($image) && $this->getFileSizeMB($image) < 10){
+            if($this->isExtAllowed($image) && $this->getFileSizeMB($image) < 10 && $this->getSafeImageName($image)){
                 $this->createPost($image, 'social');
                 $this->removeFile($image);
             }else{
@@ -70,7 +70,7 @@ class SyncController extends Controller
         $ext    = 	$this->getFileExtension($image);
         $id     =   $this->getRandomID();
         $uri 	= 	'/uploads/'.$type.'/'.$id.'.'.$ext;
-        $tags   =   $caption. ','.Config::where('name','=', 'default_tags')->first()->value;
+        $tags   =   ($caption) ? $caption. ','.Config::where('name','=', 'default_tags')->first()->value : '';
 
         $post = new Post([
             'caption'   =>  $caption,

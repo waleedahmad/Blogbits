@@ -9,6 +9,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/content/sync', 'SyncController@syncData');
     Route::get('/content/sync/social', 'SyncController@syncSocialData');
     Route::delete('/content/delete', 'ContentController@deletePost');
+    Route::get('/content/edit/{id}', 'ContentController@editPost');
+    Route::post('/content/update', 'ContentController@updatePost');
     Route::post('/content/post/blog', 'APIController@publishBlogPost');
     Route::post('/content/post/social', 'APIController@publishSocialPost');
     Route::post('/content/post/batch', 'APIController@publishPostBatch');
@@ -22,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/config/posts/batchLimit','ConfigController@getBatchPostLimit');
 
     Route::get('/albums', 'APIController@syncFacebookAlbums');
+
+    Route::get('/info','APIController@getInfo');
 });
 
 Route::group([

@@ -11,6 +11,10 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-4 col-md-4 col-lg-4 post">
                     <div class="thumbnail">
+                        <a class="edit-post" target="_blank" href="/content/edit/{{$post->id}}">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </a>
+
                         <img src="{{$post->uri}}">
                         <div class="caption">
                             <h3>{{substr($post->caption,0,30)}}</h3>

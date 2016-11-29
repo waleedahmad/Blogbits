@@ -12,7 +12,7 @@ class ContentController extends Controller
 {
     /**
      * Render tumblr posts
-     * @return $this
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function blogContent(){
         $posts = Post::where('type','=','blog')->simplePaginate(10);
@@ -21,10 +21,10 @@ class ContentController extends Controller
 
     /**
      * Render social posts
-     * @return $this
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function socialContent(){
-        $posts = Post::where('type','=','social')->simplePaginate(10);
+        $posts = Post::where('type','=','social')->inRandomOrder()->simplePaginate(10);
         return view('index')->with('posts', $posts);
     }
     
@@ -86,5 +86,21 @@ class ContentController extends Controller
         Post::where('id','=', $post_id)->update([
             'tags'  => $tags
         ]);
+    }
+
+    public function editPost($id){
+        $post = Post::where('id', '=', $id)->first();
+        return view('edit_post')->with('post' , $post);
+    }
+
+    public function updatePost(Request $request){
+        $id = $request->input('id');
+        $caption = $request->input('caption');
+
+        if(Post::where('id', '=', $id)->update([
+            'caption'   =>  $caption
+        ])){
+            return redirect('/');
+        }
     }
 }

@@ -21,7 +21,31 @@
 }
 
 .post{
+
+    &:hover{
+        .edit-post{
+            display: block;
+        }
+    }
+
+
+
+    .edit-post{
+        position:absolute;
+        top: 20px;
+        right: 30px;
+        color:#36465d;
+        font-size: 20px;
+        display: none;
+
+        &:hover{
+            color:grey;
+        }
+    }
+
     .bootstrap-tagsinput{
+        margin-top: 20px;
+        clear:both;
         width : 100%;
         display: block;
 
@@ -34,14 +58,28 @@
         margin-right : 5px;
     }
 
+    .image-caption{
+        width: 100%;
+    }
+
+    .image-caption, .update-post{
+        display:inline-block;
+        float:left;
+    }
+
+    .update-post{
+        margin: 5px;
+    }
+
     .post-now, .delete-now{
         margin-top: 15px;
         display : none;
     }
 
-    h3{
+    h3, .image-caption{
         display: inline-block;
     }
+
 
     &:hover{
         .post-now,.delete-now{

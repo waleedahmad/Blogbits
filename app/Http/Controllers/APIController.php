@@ -16,6 +16,8 @@ use App\Http\Requests;
 class APIController extends Controller
 {
     protected $client;
+    protected $fb;
+    protected $pinterest;
 
     public function __construct()
     {
