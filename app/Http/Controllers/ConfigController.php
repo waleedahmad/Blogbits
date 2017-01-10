@@ -218,6 +218,11 @@ class ConfigController extends Controller
         ]);
     }
 
+    /**
+     * Updates scheduler timings
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateSchedulerTimings(Request $request){
 
         $social = ($request->input('type') === 'social') ? 'social_' : '';

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class SyncController extends Controller
 {
     /**
-     * Sync all files
+     * Sync all Blog directory images
      * @return \Illuminate\Http\JsonResponse
      */
     public function syncData(){
@@ -31,6 +31,10 @@ class SyncController extends Controller
         return response()->json(true);
     }
 
+    /**
+     * Syncs Social directory images
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function syncSocialData(){
         $images = $this->getAllImages('social');
 
@@ -70,7 +74,7 @@ class SyncController extends Controller
         $ext    = 	$this->getFileExtension($image);
         $id     =   $this->getRandomID();
         $uri 	= 	'/uploads/'.$type.'/'.$id.'.'.$ext;
-        $tags   =   ($caption) ? $caption. ','.Config::where('name','=', 'default_tags')->first()->value : '';
+        $tags   =   ($caption) ? $this->getPostTagsFromCaption($this->getSafeImageName($image)). ','.Config::where('name','=', 'default_tags')->first()->value : '';
 
         $post = new Post([
             'caption'   =>  $caption,
@@ -145,7 +149,16 @@ class SyncController extends Controller
      * @return string
      */
     protected function getSafeImageName($file){
-        return trim(preg_replace(['/[^A-Za-z0-9\-]/', '/[0-9]+/'], ' ', basename( utf8_encode(File::name($file)))));
+        return trim(preg_replace(['/[^A-Za-z0-9\-,&]/', '/[0-9]+/'], ' ', basename( utf8_encode(File::name($file)))));
+    }
+
+    /**
+     * Post tags from caption
+     * @param $caption
+     * @return string
+     */
+    protected function getPostTagsFromCaption($caption){
+        return implode(",", preg_split( "/[&,]/", $caption ));
     }
 
     /**

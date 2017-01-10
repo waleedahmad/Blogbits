@@ -96,7 +96,7 @@ class ContentController extends Controller
     /**
      * Edit posts
      * @param $id
-     * @return $this
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function editPost($id){
         $post = Post::where('id', '=', $id)->first();

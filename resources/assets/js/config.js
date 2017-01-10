@@ -86,6 +86,7 @@ class Config{
     initFbAlbumSync(_this){
         $("#sync-fb-albums").on('click', function(e){
 
+            toastr.info('Syncing facebook albums');
             e.preventDefault();
 
             $.ajax({
@@ -106,7 +107,8 @@ class Config{
     initPostBackup(_this) {
         $("#backup-content").on('click', function(e){
             e.preventDefault();
-            console.log("Backup");
+
+            toastr.info('Backing up all posts!');
 
             $.ajax({
                 type : 'POST',
@@ -131,8 +133,6 @@ class Config{
         this.initFbAlbumSync(this);
         this.initPostBackup(this);
     }
-
-
 }
 
 new Config();
