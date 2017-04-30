@@ -25,7 +25,7 @@ class ContentController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function socialContent(){
-        $posts = Post::where('type','=','social')->inRandomOrder()->simplePaginate(10);
+        $posts = Post::where('type','=','social')->simplePaginate(10);
         return view('index')->with('posts', $posts);
     }
     

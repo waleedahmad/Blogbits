@@ -112,6 +112,44 @@ class APIController extends Controller
         return false;
     }
 
+    public function getPosts(Request $request){
+        $offset = ($request->offset) ? $request->offset : 0;
+        $config = $this->getConfig();
+        $posts = $this->client->getBlogPosts($config['active_blog'], [
+            'limit' =>  5,
+            'offset'    =>  $offset,
+            'tag'    =>  'models'
+        ]);
+        return view('blog_posts')->with('blog', $posts)->with('offset', $offset + 5);
+    }
+
+    public function getAllPost(){
+        $offset = 0;
+        $config = $this->getConfig();
+        $urls = [];
+
+        $posts = $this->getTumblrPosts($config['active_blog'], $offset);
+
+        while(count($posts)) {
+            foreach ($posts as $post) {
+                foreach ($post->photos as $photo) {
+                    array_push($urls, $photo->original_size->url);
+                }
+            }
+            $offset +=5;
+            $posts = $this->getTumblrPosts($config['active_blog'], $offset);
+        }
+        dump($urls);
+    }
+
+    function getTumblrPosts($blog, $offset){
+        return $this->client->getBlogPosts($blog, [
+            'limit' =>  5,
+            'offset'    =>  $offset,
+            'tag'    =>  'models'
+        ])->posts;
+    }
+
     /**
      * Public social post
      * @param Request $request

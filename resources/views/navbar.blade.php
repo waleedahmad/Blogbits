@@ -27,13 +27,33 @@
                         <li>
                             <a href="/social"> <i class="fa fa-image" aria-hidden="true"></i> Social Content</a>
                         </li>
+
+                        <li>
+                            <a href="/tumblr"> <i class="fa fa-image" aria-hidden="true"></i> Tumblr Feed</a>
+                        </li>
                 @endif
 
                 @if(Request::is('social'))
                     <li>
                         <a href="/"> <i class="fa fa-image" aria-hidden="true"></i> Blog Content</a>
                     </li>
+
+                    <li>
+                        <a href="/tumblr"> <i class="fa fa-image" aria-hidden="true"></i> Tumblr Feed</a>
+                    </li>
                 @endif
+
+                @if(Request::is('tumblr'))
+                    <li>
+                        <a href="/"> <i class="fa fa-image" aria-hidden="true"></i> Blog Content</a>
+                    </li>
+
+                    <li>
+                        <a href="/social"> <i class="fa fa-image" aria-hidden="true"></i> Social Content</a>
+                    </li>
+                @endif
+
+
 
                 <li>
                     <a href="#" id="sync-data"> <i class="fa fa-refresh" aria-hidden="true"></i> Blog Sync</a>
