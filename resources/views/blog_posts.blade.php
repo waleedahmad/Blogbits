@@ -35,7 +35,7 @@
 
         <ul class="pager">
             <li>
-                <a href="http://127.0.0.1:8080/posts/?offset={{$offset}}" rel="next">>></a>
+                <a href="http://127.0.0.1:8080/tumblr/?offset={{$offset}}" rel="next">>></a>
             </li>
         </ul>
     </div>

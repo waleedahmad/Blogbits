@@ -124,29 +124,30 @@ class APIController extends Controller
     }
 
     public function getAllPost(){
-        $offset = 0;
+        $offset = 20;
         $config = $this->getConfig();
-        $urls = [];
 
         $posts = $this->getTumblrPosts($config['active_blog'], $offset);
 
         while(count($posts)) {
             foreach ($posts as $post) {
-                foreach ($post->photos as $photo) {
-                    array_push($urls, $photo->original_size->url);
+                if(count($post->photos)){
+                    foreach ($post->photos as $photo) {
+                        dump($photo->original_size->url);
+                    }
                 }
             }
-            $offset +=5;
+            $offset +=20;
             $posts = $this->getTumblrPosts($config['active_blog'], $offset);
         }
-        dump($urls);
     }
 
     function getTumblrPosts($blog, $offset){
         return $this->client->getBlogPosts($blog, [
-            'limit' =>  5,
+            'limit' =>  20,
             'offset'    =>  $offset,
-            'tag'    =>  'models'
+            'tag'    =>  'models',
+            'type'  =>  'photo'
         ])->posts;
     }
 
