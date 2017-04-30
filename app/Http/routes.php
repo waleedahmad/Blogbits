@@ -27,9 +27,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/albums', 'APIController@syncFacebookAlbums');
 
     Route::get('/tumblr', 'APIController@getPosts');
-    Route::get('/tumblr/posts/all', 'APIController@getAllPost');
-
-
 });
 
 Route::group([

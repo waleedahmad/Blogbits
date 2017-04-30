@@ -112,43 +112,20 @@ class APIController extends Controller
         return false;
     }
 
+    /**
+     * Show Tumblr blog posts
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
     public function getPosts(Request $request){
         $offset = ($request->offset) ? $request->offset : 0;
         $config = $this->getConfig();
         $posts = $this->client->getBlogPosts($config['active_blog'], [
-            'limit' =>  5,
+            'limit' =>  20,
             'offset'    =>  $offset,
             'tag'    =>  'models'
         ]);
         return view('blog_posts')->with('blog', $posts)->with('offset', $offset + 5);
-    }
-
-    public function getAllPost(){
-        $offset = 20;
-        $config = $this->getConfig();
-
-        $posts = $this->getTumblrPosts($config['active_blog'], $offset);
-
-        while(count($posts)) {
-            foreach ($posts as $post) {
-                if(count($post->photos)){
-                    foreach ($post->photos as $photo) {
-                        dump($photo->original_size->url);
-                    }
-                }
-            }
-            $offset +=20;
-            $posts = $this->getTumblrPosts($config['active_blog'], $offset);
-        }
-    }
-
-    function getTumblrPosts($blog, $offset){
-        return $this->client->getBlogPosts($blog, [
-            'limit' =>  20,
-            'offset'    =>  $offset,
-            'tag'    =>  'models',
-            'type'  =>  'photo'
-        ])->posts;
     }
 
     /**

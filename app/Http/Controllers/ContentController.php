@@ -122,13 +122,15 @@ class ContentController extends Controller
         $posts = Post::all();
 
         foreach($posts as $post){
-            $post->delete();
-            if(File::move(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name , $this->getUniqueFileName($post->caption, $post->file_name, $post->type,1))){
-                $post->delete();
+
+            if(File::exists(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name)){
+                if(File::copy(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name , $this->getUniqueFileName($post->caption, $post->file_name, $post->type,1))){
+                    if(File::delete(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name)){
+                        $post->delete();
+                    }
+                }
             }
         }
-
-        Post::truncate();
 
         return response()->json(true);
     }

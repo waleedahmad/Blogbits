@@ -20,8 +20,6 @@
                             <img src="{{$photo->original_size->url}}">
                             <div class="caption">
                                 <h3>{!! $post->caption !!}</h3>
-                                <button data-id="" class="btn btn-danger btn-sm pull-right delete-now">Delete</button>
-                                <button data-id="" data-type="" class="btn btn-primary btn-sm pull-right post-now">Post Now</button>
                             </div>
 
                             <div class="actions">
