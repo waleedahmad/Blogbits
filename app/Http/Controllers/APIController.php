@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Config;
-use App\Models\FacebookAlbum;
-use App\Models\Post;
+use App\Config;
+use App\FacebookAlbum;
+use App\Post;
 use DirkGroenen\Pinterest\Pinterest;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Tumblr\API\Client as TumblrAPI;
-use App\Http\Requests;
+
 
 class APIController extends Controller
 {
@@ -21,21 +23,25 @@ class APIController extends Controller
 
     public function __construct()
     {
-        $this->client = new TumblrAPI(
-            env('TUMBLR_CONSUMER_KEY'), // Consumer Key
-            env('TUMBLR_CONSUMER_SECRET'), // Consumer Secret
-            env('TUMBLR_TOKEN'), // Token
-            env('TUMBLR_TOKEN_SECRET')  // Token Secret
-        );
+        $this->middleware(function ($request, $next) {
+            $this->client = new TumblrAPI(
+                env('TUMBLR_CONSUMER_KEY'), // Consumer Key
+                env('TUMBLR_CONSUMER_SECRET'), // Consumer Secret
+                env('TUMBLR_TOKEN'), // Token
+                env('TUMBLR_TOKEN_SECRET')  // Token Secret
+            );
 
-        $this->fb = new \Facebook\Facebook([
-            'app_id' => env('FACEBOOK_CLIENT_ID'),
-            'app_secret' => env('FACEBOOK_CLIENT_SECRET'),
-            'default_graph_version' => 'v2.6',
-            'default_access_token' => $this->getUserAccessToken(),
-        ]);
+            $this->fb = new Facebook([
+                'app_id' => env('FACEBOOK_CLIENT_ID'),
+                'app_secret' => env('FACEBOOK_CLIENT_SECRET'),
+                'default_graph_version' => 'v2.6',
+                'default_access_token' => $this->getUserAccessToken(),
+            ]);
 
-        $this->pinterest = new Pinterest(env('PINTEREST_APP_ID'), env('PINTEREST_APP_SECRET'));
+            $this->pinterest = new Pinterest(env('PINTEREST_APP_ID'), env('PINTEREST_APP_SECRET'));
+
+            return $next($request);
+        });
     }
 
     /**
@@ -102,7 +108,7 @@ class APIController extends Controller
             'tags'      =>  $post->tags,
             'slug'      =>  $post->caption,
             'caption'   =>  '<a href="'.$config['post_link'].'">'.$post->caption.'</a>',
-            'data64'    =>  base64_encode($this->getImage($post->file_name, 'tumblr')),
+            'data64'    =>  base64_encode($this->getImage($post->file_name, $post->type)),
             'link'      =>  $config['post_link'],
             'source_url'    =>  'http://'.$config['active_blog']
         ])){
@@ -184,7 +190,7 @@ class APIController extends Controller
 
         $post = $this->fb->post('/' .$album_id. '/photos', [
             'message' => $post->caption,
-            'source'    =>  $this->fb->fileToUpload(url('/').$post->uri)
+            'source'    =>  $this->fb->fileToUpload(url('/storage').'/'.$post->uri)
         ], $this->getPageAccessToken($config['facebook_pageid']));
 
         return $post->getGraphNode()->asArray();
@@ -274,11 +280,11 @@ class APIController extends Controller
             // Get the \Facebook\GraphNodes\GraphUser object for the current user.
             // If you provided a 'default_access_token', the '{access-token}' is optional.
             $response = $this->fb->get('/me/accounts', $this->getUserAccessToken());
-        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch(FacebookResponseException $e) {
             // When Graph returns an error
             echo 'Graph returned an error: ' . $e->getMessage();
             exit;
-        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch(FacebookSDKException $e) {
             // When validation fails or other local issues
             echo 'Facebook SDK returned an error: ' . $e->getMessage();
             exit;
@@ -331,7 +337,7 @@ class APIController extends Controller
         $this->pinterest->auth->setOAuthToken($config['pinterest_token']);
         return $this->pinterest->pins->create(array(
             "note"          => $post->caption,
-            "image"         => storage_path('app/public/posts/'.$post->type.'/'.$post->file_name),
+            "image"         => storage_path('app/public/'.$post->type.'/'.$post->file_name),
             "board"         => $config['pinterest_username'].'/'.$config['pinterest_board']
         ))->toArray();
     }
@@ -343,7 +349,7 @@ class APIController extends Controller
      * @return mixed
      */
     public function getImage($file_name,$type){
-        return Storage::disk('local')->get('/public/posts/'.$type.'/'.$file_name);
+        return Storage::disk('public')->get($type.'/'.$file_name);
     }
 
     /**
@@ -353,7 +359,7 @@ class APIController extends Controller
      * @return mixed
      */
     public function deleteImage($file_name, $type){
-        return Storage::disk('local')->delete('/public/posts/'.$type.'/'.$file_name);
+        return Storage::disk('public')->delete($type.'/'.$file_name);
     }
 
     /**

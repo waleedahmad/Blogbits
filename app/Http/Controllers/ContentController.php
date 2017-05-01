@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Models\Post;
+use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Tumblr\API\Client;
 
 class ContentController extends Controller
 {
@@ -33,7 +31,7 @@ class ContentController extends Controller
         $posts = Post::where('type','=','pinterest')->simplePaginate(10);
         return view('index')->with('posts', $posts);
     }
-    
+
     /**
      * Delete a single post
      * @param Request $request
@@ -41,11 +39,9 @@ class ContentController extends Controller
      */
     public function deletePost(Request $request){
         $post_id = $request->input('post_id');
-        $post = Post::where('id','=',$post_id);
+        $post = Post::find($post_id);
 
-        if($post->count()){
-            $post = $post->first();
-
+        if($post){
             if($this->deleteImage($post->file_name, $post->type)){
                 if($post->delete()){
                     return response()->json(true);
@@ -82,7 +78,7 @@ class ContentController extends Controller
      * @return mixed
      */
     public function deleteImage($name, $type){
-        return Storage::disk('local')->delete('/public/posts/'.$type.'/'.$name);
+        return Storage::disk('public')->delete($type.'/'.$name);
     }
 
     /**
@@ -128,9 +124,9 @@ class ContentController extends Controller
 
         foreach($posts as $post){
 
-            if(File::exists(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name)){
-                if(File::copy(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name , $this->getUniqueFileName($post->caption, $post->file_name, $post->type,1))){
-                    if(File::delete(storage_path().'/app/public/posts/'.$post->type.'/'.$post->file_name)){
+            if(File::exists(storage_path().'/app/public/'.$post->type.'/'.$post->file_name)){
+                if(File::copy(storage_path().'/app/public/'.$post->type.'/'.$post->file_name , $this->getUniqueFileName($post->caption, $post->file_name, $post->type,1))){
+                    if(File::delete(storage_path().'/app/public/'.$post->type.'/'.$post->file_name)){
                         $post->delete();
                     }
                 }
@@ -149,11 +145,14 @@ class ContentController extends Controller
      * @return mixed|string
      */
     public function getUniqueFileName($caption, $filename, $type, $counter){
-        $sync_folder = env('SYNC_FOLDER');
-        $social_sync_folder = env('SOCIAL_SYNC_FOLDER');
 
-        $path = ($type === 'blog') ? $sync_folder.'/' : $social_sync_folder;
-        $path = $path.'/'.$caption.$counter.$this->getExtensionFromFileName($filename);
+        $folder = [
+            'pinterest' =>  env('PINTEREST_SYNC_FOLDER'),
+            'facebook'  =>  env('FACEBOOK_SYNC_FOLDER'),
+            'tumblr'    =>  env('SYNC_FOLDER')
+        ];
+
+        $path = $folder[$type].'/'.$caption.$counter.$this->getExtensionFromFileName($filename);
 
         if(File::exists($path)) {
             return $this->getUniqueFileName($caption, $filename, $type, $counter + 1);

@@ -2,7 +2,8 @@
 
 namespace App\Console;
 
-use App\Models\Config;
+use App\Config;
+use App\Console\Commands\PublishPosts;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-         Commands\PublishPosts::class,
+        PublishPosts::class
     ];
 
     /**
@@ -54,5 +55,15 @@ class Kernel extends ConsoleKernel
             'start' =>  Config::where('name', '=', 'scheduler_start_time')->first()->value,
             'end'   =>  Config::where('name', '=', 'scheduler_end_time')->first()->value
         ];
+    }
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        require base_path('routes/console.php');
     }
 }

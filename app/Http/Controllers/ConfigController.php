@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Config;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\User;
 use Validator;
-use App\Http\Requests;
+use App\Config;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ConfigController extends Controller
 {
-
     public function configView()
     {
         return view('config')->with('config', $this->getConfig());
@@ -117,7 +115,7 @@ class ConfigController extends Controller
                 'everyThirtyMinutes',
                 'hourly'
             ]
-            
+
         ];
     }
 

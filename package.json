@@ -1,54 +1,29 @@
 {
   "private": true,
   "scripts": {
-    "prod": "gulp --production",
-    "dev": "gulp watch"
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
-    "babel-preset-es2015": "^6.9.0",
-    "bootstrap-sass": "^3.0.0",
+    "axios": "^0.15.3",
+    "babel": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "bootstrap-sass": "^3.3.7",
+    "cross-env": "^3.2.3",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-uglify": "^2.3.0",
     "grunt-contrib-watch": "^1.0.0",
-    "gulp": "^3.9.1",
-    "laravel-elixir": "^5.0.0"
-  },
-  "name": "blogbits",
-  "version": "1.0.1",
-  "description": "Content Management Assistant for Social Platforms",
-  "main": "Gruntfile.js",
-  "directories": {
-    "test": "tests"
-  },
-  "dependencies": {
-    "grunt-babel": "^6.0.0",
-    "babel": "^6.5.2",
-    "babel-preset-es2015": "^6.9.0",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt": "^1.0.1"
-  },
-  "author": "Waleed Ahmad <waleedgplus@gmail.com> (https://waleedahmad.com/\")",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/waleedahmad/Boster.git"
-  },
-  "keywords": [
-    "Blog",
-    "Social",
-    "Tumblr",
-    "Poster",
-    "Content",
-    "Manager"
-  ],
-  "bugs": {
-    "url": "https://github.com/waleedahmad/Boster/issues"
-  },
-  "homepage": "https://github.com/waleedahmad/Boster#readme"
+    "jquery": "^3.1.1",
+    "laravel-mix": "0.*",
+    "lodash": "^4.17.4",
+    "vue": "^2.1.10"
+  }
 }

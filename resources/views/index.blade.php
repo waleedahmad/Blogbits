@@ -16,7 +16,7 @@
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </a>
 
-                    <img src="{{$post->uri}}">
+                    <img src="/storage/{{$post->uri}}">
                     <div class="caption">
                         <h3>{{substr($post->caption,0,30)}}</h3>
                         <button data-id="{{$post->id}}" class="btn btn-danger btn-sm pull-right delete-now">Delete</button>

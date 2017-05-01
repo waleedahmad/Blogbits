@@ -8,10 +8,10 @@ class Posts{
         $($grid).jscroll({
             debug: false,
             autoTrigger: true,
-            nextSelector: '.pager li:last a',
-            contentSelector: '.post, .pager',
+            nextSelector: '.pagination li:last a',
+            contentSelector: '.post, .pagination',
             callback: function() {
-                $('ul.pager:visible:first').remove();
+                $('ul.pagination:visible:first').remove();
                 $('.jscroll-added > *').unwrap();
                 _this.initPostTags(_this);
                 _this.initPost(_this);

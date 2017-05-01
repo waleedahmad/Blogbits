@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Config;
-use App\Models\Post;
-use App\Http\Requests;
+use App\Config;
+use App\Post;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,7 +26,7 @@ class SyncController extends Controller
                 $this->removeFile($image);
             }
         }
-        
+
         return response()->json(true);
     }
 
@@ -74,7 +73,7 @@ class SyncController extends Controller
         $caption=   $this->getSafeImageName($image);
         $ext    = 	$this->getFileExtension($image);
         $id     =   $this->getRandomID();
-        $uri 	= 	'/uploads/'.$type.'/'.$id.'.'.$ext;
+        $uri 	= 	$type.'/'.$id.'.'.$ext;
         $tags   =   ($caption) ? $this->getPostTagsFromCaption($this->getSafeImageName($image)). ','.Config::where('name','=', 'default_tags')->first()->value : '';
 
         $post = new Post([
@@ -100,7 +99,7 @@ class SyncController extends Controller
      * @param $type
      */
     public function saveFile($file, $id, $ext, $type){
-        Storage::disk('local')->put('/public/posts/'.$type.'/'.$id.'.'.$ext,  File::get($file));
+        Storage::disk('public')->put('/'.$type.'/'.$id.'.'.$ext,  File::get($file));
     }
 
     /**
@@ -174,5 +173,4 @@ class SyncController extends Controller
     function getFileSizeMB($file){
         return (File::size($file) * .0009765625) * .0009765625;
     }
-    
 }

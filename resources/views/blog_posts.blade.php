@@ -31,7 +31,7 @@
             @endforeach
         @endforeach
 
-        <ul class="pager">
+        <ul class="pagination">
             <li>
                 <a href="http://127.0.0.1:8080/tumblr/?offset={{$offset}}" rel="next">>></a>
             </li>

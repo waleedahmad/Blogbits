@@ -20,6 +20,10 @@
             @else
 
                 <li>
+                    <a href="#" id="post-batch"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Post Batch ({{App\Post::where('type','=','tumblr')->count()}})</a>
+                </li>
+
+                <li>
                     <a href="#" id="sync-data"> <i class="fa fa-tumblr-square" aria-hidden="true"></i> Blog Sync</a>
                 </li>
 
@@ -27,9 +31,9 @@
                     <a href="#" id="facebook-sync"> <i class="fa fa-facebook" aria-hidden="true"></i> Facebook Sync</a>
                 </li>
 
-                    <li>
-                        <a href="#" id="pinterest-sync"> <i class="fa fa-pinterest" aria-hidden="true"></i> Pinterest Sync</a>
-                    </li>
+                <li>
+                    <a href="#" id="pinterest-sync"> <i class="fa fa-pinterest" aria-hidden="true"></i> Pinterest Sync</a>
+                </li>
 
                 <li class="dropdown">
                     <a href="#"

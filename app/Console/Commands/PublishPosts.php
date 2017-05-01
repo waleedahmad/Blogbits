@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Config;
-use App\Models\Post;
+use App\Config;
+use App\Post;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Tumblr\API\Client as TumblrAPI;
@@ -25,21 +25,11 @@ class PublishPosts extends Command
      */
     protected $description = 'Command description';
 
-
-    /**
-     * Tumblr Client API
-     *
-     * @var TumblrAPIT
-     */
-    protected $client;
-
     /**
      * Create a new command instance.
      *
      * @return void
      */
-
-
     public function __construct()
     {
         parent::__construct();
@@ -67,11 +57,11 @@ class PublishPosts extends Command
      * @return \Illuminate\Http\JsonResponse
      */
     public function publishPostBatch(){
-        $posts = Post::where('type','=','blog')->take($this->getBatchPostLimit())->get();
+        $posts = Post::where('type','=','tumblr')->take($this->getBatchPostLimit())->get();
         foreach ($posts as $post){
             if($this->createPost($post)){
                 $post->delete();
-                $this->deleteImage($post->file_name, $post->type);
+                $this->deleteImage($post->uri);
             }
         }
     }
@@ -89,7 +79,7 @@ class PublishPosts extends Command
             'tags'      =>  $post->tags,
             'slug'      =>  $post->caption,
             'caption'   =>  '<a href="'.$config['post_link'].'">'.$post->caption.'</a>',
-            'data64'    =>  base64_encode($this->getImage($post->file_name, $post->type)),
+            'data64'    =>  base64_encode($this->getImage($post->uri)),
             'link'      =>  $config['post_link'],
             'source_url'    =>  'http://'.$config['active_blog']
         ])){
@@ -109,22 +99,20 @@ class PublishPosts extends Command
 
     /**
      * Delete image from storage
-     * @param $file_name
-     * @param $type
+     * @param $uri
      * @return mixed
      */
-    public function deleteImage($file_name, $type){
-        return Storage::disk('local')->delete('/public/posts/'.$type.'/'.$file_name);
+    public function deleteImage($uri){
+        return Storage::disk('public')->delete($uri);
     }
 
     /**
      * Get image from storage
-     * @param $file_name
-     * @param $type
+     * @param $uri
      * @return mixed
      */
-    public function getImage($file_name, $type){
-        return Storage::disk('local')->get('/public/posts/'.$type.'/'.$file_name);
+    public function getImage($uri){
+        return Storage::disk('public')->get($uri);
     }
 
     /**
