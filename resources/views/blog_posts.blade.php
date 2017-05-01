@@ -14,13 +14,10 @@
             @foreach($post->photos as $photo)
                 <div class="post">
                     <div class="thumbnail">
-                        <a class="edit-post" target="_blank" href="/content/edit/">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </a>
 
                         <img src="{{$photo->original_size->url}}">
                         <div class="caption">
-                            <h3>{!! $post->caption !!}</h3>
+                            <h3>{!! $post->caption !!} <small>{{$post->note_count}} Notes</small></h3>
                         </div>
 
                         <div class="actions">

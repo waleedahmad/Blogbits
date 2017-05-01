@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container settings">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#blog" aria-controls="blog" role="tab" data-toggle="tab">Blog</a></li>

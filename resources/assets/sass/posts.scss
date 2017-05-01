@@ -1,4 +1,5 @@
 .grid{
+    margin-top: 20px;
     display: block;
     position: relative;
     height : 100%;
@@ -109,6 +110,10 @@
 
     h3, .image-caption{
         display: inline-block;
+    }
+
+    .notes{
+        font-size: 20px;
     }
 
 
