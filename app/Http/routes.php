@@ -6,6 +6,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'ContentController@blogContent');
     Route::get('/facebook', 'ContentController@facebookContent');
     Route::get('/pinterest', 'ContentController@pinterestContent');
+    Route::get('/tumblr', 'APIController@getPosts');
 
     Route::post('/social/sync/fbAlbums', 'APIController@syncFacebookAlbums');
 
@@ -32,9 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/config/{type}', 'ConfigController@config');
     Route::get('/config/posts/batchLimit','ConfigController@getBatchPostLimit');
 
-    Route::get('/albums', 'APIController@syncFacebookAlbums');
 
-    Route::get('/tumblr', 'APIController@getPosts');
 });
 
 Route::group([

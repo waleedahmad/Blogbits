@@ -35,7 +35,7 @@ class APIController extends Controller
             'default_access_token' => $this->getUserAccessToken(),
         ]);
 
-        $this->pinterest = new Pinterest(env('PINTEREST_APP_ID'), env('af42bc8f21667ba346076396abfd502b46a38fbd159bdfed8f5b8e31a345d80a'));
+        $this->pinterest = new Pinterest(env('PINTEREST_APP_ID'), env('PINTEREST_APP_SECRET'));
     }
 
     /**
