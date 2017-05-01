@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-fixed-top">
     <div class="container">
 
         <div class="navbar-header">
@@ -19,48 +19,16 @@
                     <li><a href="/register">Register</a></li>
             @else
 
-                @if(Request::is('/'))
-                        <li>
-                            <a href="#" id="post-batch"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Post Batch ({{App\Models\Post::where('type','=','blog')->count()}})</a>
-                        </li>
-
-                        <li>
-                            <a href="/social"> <i class="fa fa-image" aria-hidden="true"></i> Social Content</a>
-                        </li>
-
-                        <li>
-                            <a href="/tumblr"> <i class="fa fa-image" aria-hidden="true"></i> Tumblr Feed</a>
-                        </li>
-                @endif
-
-                @if(Request::is('social'))
-                    <li>
-                        <a href="/"> <i class="fa fa-image" aria-hidden="true"></i> Blog Content</a>
-                    </li>
-
-                    <li>
-                        <a href="/tumblr"> <i class="fa fa-image" aria-hidden="true"></i> Tumblr Feed</a>
-                    </li>
-                @endif
-
-                @if(Request::is('tumblr'))
-                    <li>
-                        <a href="/"> <i class="fa fa-image" aria-hidden="true"></i> Blog Content</a>
-                    </li>
-
-                    <li>
-                        <a href="/social"> <i class="fa fa-image" aria-hidden="true"></i> Social Content</a>
-                    </li>
-                @endif
-
-
+                <li>
+                    <a href="#" id="sync-data"> <i class="fa fa-tumblr-square" aria-hidden="true"></i> Blog Sync</a>
+                </li>
 
                 <li>
-                    <a href="#" id="sync-data"> <i class="fa fa-refresh" aria-hidden="true"></i> Blog Sync</a>
+                    <a href="#" id="facebook-sync"> <i class="fa fa-facebook" aria-hidden="true"></i> Facebook Sync</a>
                 </li>
 
                     <li>
-                        <a href="#" id="social-sync"> <i class="fa fa-refresh" aria-hidden="true"></i> Social Sync</a>
+                        <a href="#" id="pinterest-sync"> <i class="fa fa-pinterest" aria-hidden="true"></i> Pinterest Sync</a>
                     </li>
 
                 <li class="dropdown">
@@ -75,11 +43,15 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#" id="delete-sync"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete Blog Content</a>
+                            <a href="#" id="delete-sync" data-name="Tumblr" data-service="tumblr"> <i class="fa fa-tumblr-square" aria-hidden="true"></i> Delete Blog Content</a>
                         </li>
 
                         <li>
-                            <a href="#" id="social-delete-sync"> <i class="fa fa-trash-o" aria-hidden="true"></i> Delete Social Content</a>
+                            <a href="#" id="pinterest-delete-sync" data-name="Pinterest" data-service="pinterest"> <i class="fa fa-pinterest" aria-hidden="true"></i> Delete Pinterest Content</a>
+                        </li>
+
+                        <li>
+                            <a href="#" id="facebook-delete-sync" data-name="Facebook" data-service="facebook"> <i class="fa fa-facebook" aria-hidden="true"></i> Delete Facebook Content</a>
                         </li>
 
                         <li class="nav-divider"></li>

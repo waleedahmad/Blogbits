@@ -16,7 +16,7 @@ class ContentController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function blogContent(){
-        $posts = Post::where('type','=','blog')->simplePaginate(10);
+        $posts = Post::where('type','=','tumblr')->simplePaginate(10);
         return view('index')->with('posts', $posts);
     }
 
@@ -24,8 +24,13 @@ class ContentController extends Controller
      * Render social posts
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function socialContent(){
-        $posts = Post::where('type','=','social')->simplePaginate(10);
+    public function facebookContent(){
+        $posts = Post::where('type','=','facebook')->simplePaginate(10);
+        return view('index')->with('posts', $posts);
+    }
+
+    public function pinterestContent(){
+        $posts = Post::where('type','=','pinterest')->simplePaginate(10);
         return view('index')->with('posts', $posts);
     }
     

@@ -6,19 +6,20 @@ class ContentSync{
      */
     requestSync(e){
         e.preventDefault();
-        var _this = e.data.context;
+        var uri = e.data.uri,
+            name = e.data.name;
 
         toastr.info('Sync in progress, please wait...')
         $(this).unbind('click');
         $.ajax({
             type : 'GET',
-            url : '/content/sync',
+            url : uri,
             data : {
-                _token : _this.token
+                _token : this.token
             },
             success: function(res){
                 if(res){
-                    toastr.success('success','Content successfully synced...')
+                    toastr.success('success', name + ' Content successfully synced...')
                     setTimeout(function(){
                         window.location.reload();
                     },3000);
@@ -26,49 +27,23 @@ class ContentSync{
             }
         });
     }
-
-    /**
-     * Sync Social Content
-     * @param e
-     */
-    requestSocialSync(e){
-        e.preventDefault();
-        var _this = e.data.context;
-
-        toastr.info('Social sync in progress, please wait...')
-        $(this).unbind('click');
-        $.ajax({
-            type : 'GET',
-            url : '/content/sync/social',
-            data : {
-                _token : _this.token
-            },
-            success: function(res){
-                if(res){
-                    toastr.success('success','Social Content successfully synced...')
-                    setTimeout(function(){
-                        window.location.reload();
-                    },3000);
-                }
-            }
-        });
-    }
-
     /**
      * Delete all Synced content
      * @param _this
      */
     initDeleteSync(_this){
-        $("#delete-sync").on('click', function(e){
+        $("#delete-sync, #facebook-delete-sync, #pinterest-delete-sync").on('click', function(e){
             e.preventDefault();
-            var ask = confirm('Are you sure you want to delete all synced content?');
+            var service = $(this).attr('data-service'),
+                server_name = $(this).attr('data-name'),
+                ask = confirm(`Are you sure you want to delete all ${server_name} synced content?`);
 
             if(ask){
                 toastr.info('Deleting all synced content...');
                 $(this).unbind('click');
                 $.ajax({
                     type : 'DELETE',
-                    url : '/content/deleteAll/blog',
+                    url : `/content/deleteAll/${service}`,
                     data : {
                         _token : _this.token
                     },
@@ -119,10 +94,10 @@ class ContentSync{
     constructor(){
         this.token = $("meta[name=csrf_token]").attr('content');
         this.flash_message = $("#flash-message");
-        $("#sync-data").on('click', {context : this}, this.requestSync);
-        $("#social-sync").on('click', {context : this}, this.requestSocialSync);
+        $("#sync-data").on('click', {uri : '/content/sync', name : 'Tumblr'}, this.requestSync);
+        $("#facebook-sync").on('click', {uri : '/content/sync/facebook', name : 'Facebook'}, this.requestSync);
+        $("#pinterest-sync").on('click', {uri : '/content/sync/pinterest', name : 'Pinterest'} , this.requestSync);
         this.initDeleteSync(this);
-        this.initSocialDeleteSync(this);
     }
 }
 

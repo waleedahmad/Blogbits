@@ -15,13 +15,13 @@ class SyncController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function syncData(){
-        $images = $this->getAllImages('blog');
+        $images = $this->getAllImages('tumblr');
 
         shuffle($images);
 
         foreach ($images as $image) {
             if($this->isExtAllowed($image) && $this->getFileSizeMB($image) < 10){
-                $this->createPost($image, 'blog');
+                $this->createPost($image, 'tumblr');
                 $this->removeFile($image);
             }else{
                 $this->removeFile($image);
@@ -33,16 +33,17 @@ class SyncController extends Controller
 
     /**
      * Syncs Social directory images
+     * @param $service
      * @return \Illuminate\Http\JsonResponse
      */
-    public function syncSocialData(){
-        $images = $this->getAllImages('social');
+    public function syncSocialContent($service){
+        $images = $this->getAllImages($service);
 
         shuffle($images);
 
         foreach ($images as $image) {
             if($this->isExtAllowed($image) && $this->getFileSizeMB($image) < 10 && $this->getSafeImageName($image)){
-                $this->createPost($image, 'social');
+                $this->createPost($image, $service);
                 $this->removeFile($image);
             }else{
                 $this->removeFile($image);
@@ -134,12 +135,16 @@ class SyncController extends Controller
      * @return mixed
      */
     public function getAllImages($type){
-        if($type === 'blog'){
+        if($type === 'tumblr'){
             return File::allFiles(env('SYNC_FOLDER'));
         }
 
-        if($type === 'social'){
-            return File::allFiles(env('SOCIAL_SYNC_FOLDER'));
+        if($type === 'facebook'){
+            return File::allFiles(env('FACEBOOK_SYNC_FOLDER'));
+        }
+
+        if($type === 'pinterest'){
+            return File::allFiles(env('PINTEREST_SYNC_FOLDER'));
         }
     }
 

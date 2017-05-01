@@ -1,6 +1,37 @@
 .grid{
+    display: block;
     position: relative;
     height : 100%;
+
+    @media only screen and (max-width : 1920px) {
+        margin-left: 320px;
+    }
+
+    @media only screen and (max-width : 1366px) {
+        margin-left: 320px;
+    }
+
+    @media only screen and (max-width : 1200px) {
+        margin-left: 320px;
+    }
+
+    @media only screen and (max-width : 979px) {
+        clear:both;
+        margin-left: 0px;
+    }
+
+    @media only screen and (max-width : 767px) {
+        clear:both;
+        margin-left: 0px;
+    }
+
+   /* @media only screen and (max-width : 480px) {
+        margin-left: 320px;
+    }
+
+    @media only screen and (max-width : 320px) {
+
+    }*/
 
     .row{
         margin-bottom : 20px;

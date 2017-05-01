@@ -45,11 +45,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Social Sync Folder</label>
-                            <input type="text" class="form-control" name="social_sync_folder" placeholder="Social Sync Folder (File System)" value="{{$config['social_sync_folder']}}">
-                        </div>
-
-                        <div class="form-group">
                             <label>Default Tags</label>
                             <input type="text" class="form-control" name="default_tags" placeholder="Default Tags (separated by commas)" value="{{$config['default_tags']}}">
                         </div>
@@ -196,8 +191,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Social Sync Folder</label>
-                            <input type="text" class="form-control" name="social_sync_folder" placeholder="Social Sync Folder" value="{{$config['social_sync_folder']}}">
+                            <label>Pinterest Sync Folder</label>
+                            <input type="text" class="form-control" name="pinterest_sync_folder" placeholder="Pinterest Sync Folder" value="{{$config['pinterest_sync_folder']}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Facebook Sync Folder</label>
+                            <input type="text" class="form-control" name="facebook_sync_folder" placeholder="Facebook Sync Folder" value="{{$config['facebook_sync_folder']}}">
                         </div>
 
                         <div class="form-group">

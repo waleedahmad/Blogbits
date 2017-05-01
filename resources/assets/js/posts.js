@@ -9,7 +9,7 @@ class Posts{
             debug: false,
             autoTrigger: true,
             nextSelector: '.pager li:last a',
-            contentSelector: '.row, .pager',
+            contentSelector: '.post, .pager',
             callback: function() {
                 $('ul.pager:visible:first').remove();
                 $('.jscroll-added > *').unwrap();
@@ -133,7 +133,7 @@ class Posts{
             success: function(res){
                 if(res){
                     toastr.success('Posted...');
-                    $(post_now).parents('.row').slideUp();
+                    $(post_now).parents('.post').slideUp();
                 }else{
                     $('.post-now').on('click', {context : this}, this.createPost);
                 }
@@ -162,7 +162,7 @@ class Posts{
             },
             success: function(res){
                 if(res){
-                    $(post_now).parents('.row').slideUp(function(){
+                    $(post_now).parents('.post').slideUp(function(){
                         $(this).remove();
                     });
                 }else{

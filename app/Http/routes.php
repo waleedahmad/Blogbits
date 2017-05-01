@@ -4,15 +4,23 @@ Route::auth();
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'ContentController@blogContent');
-    Route::get('/social', 'ContentController@socialContent');
+    Route::get('/facebook', 'ContentController@facebookContent');
+    Route::get('/pinterest', 'ContentController@pinterestContent');
+
     Route::post('/social/sync/fbAlbums', 'APIController@syncFacebookAlbums');
+
     Route::get('/content/sync', 'SyncController@syncData');
-    Route::get('/content/sync/social', 'SyncController@syncSocialData');
+    Route::get('/content/sync/{service}', 'SyncController@syncSocialContent');
+
     Route::delete('/content/delete', 'ContentController@deletePost');
     Route::get('/content/edit/{id}', 'ContentController@editPost');
     Route::post('/content/update', 'ContentController@updatePost');
-    Route::post('/content/post/blog', 'APIController@publishBlogPost');
-    Route::post('/content/post/social', 'APIController@publishSocialPost');
+
+    Route::post('/content/post/tumblr', 'APIController@publishBlogPost');
+    Route::post('/content/post/facebook', 'APIController@publishSocialPost');
+    Route::post('/content/post/pinterest', 'APIController@publishSocialPost');
+
+
     Route::post('/content/post/batch', 'APIController@publishPostBatch');
     Route::get('/content/user/followers', 'APIController@getClient');
     Route::delete('/content/deleteAll/{type}', 'ContentController@deleteAllPosts');

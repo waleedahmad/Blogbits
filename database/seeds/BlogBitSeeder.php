@@ -131,8 +131,14 @@ class BlogBitSeeder extends Seeder
         ]);
 
         Config::create([
-            'name'      =>  'social_sync_folder',
-            'value'     =>  env('SOCIAL_SYNC_FOLDER', ''),
+            'name'      =>  'facebook_sync_folder',
+            'value'     =>  env('FACEBOOK_SYNC_FOLDER', ''),
+            'type'      =>  'social'
+        ]);
+
+        Config::create([
+            'name'      =>  'pinterest_sync_folder',
+            'value'     =>  env('PINTEREST_SYNC_FOLDER', ''),
             'type'      =>  'social'
         ]);
     }

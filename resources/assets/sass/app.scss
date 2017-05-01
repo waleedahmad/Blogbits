@@ -15,9 +15,15 @@ body{
 
     @import "navbar";
 
-    background  : #36465d;
+    background  : #2A2B2E;
+
+    .container-fluid{
+        padding: 0px;
+        padding-top: 70px;
+    }
 
     .navbar{
+        z-index: 2;
         border-radius : 0px;
     }
 
@@ -51,6 +57,7 @@ body{
 
 
 @import "authentication";
+@import "sidebar";
 @import "posts";
 @import "config";
 @import "jquery.timepicker";

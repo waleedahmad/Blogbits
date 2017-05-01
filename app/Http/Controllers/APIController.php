@@ -53,11 +53,11 @@ class APIController extends Controller
      */
     public function publishBlogPost(Request $request){
         $post_id = $request->input('post_id');
-        $post = Post::where('id','=', $post_id);
+        $post = Post::find($post_id);
 
-        if($post->count()){
-            if($this->createBlogPost($post->first())){
-                $this->deleteImage($post->first()->file_name, $post->first()->type);
+        if($post){
+            if($this->createBlogPost($post)){
+                $this->deleteImage($post->file_name, $post->type);
                 $post->delete();
                 return response()->json(true);
             }
@@ -70,7 +70,7 @@ class APIController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function publishPostBatch(){
-        $posts = Post::where('type','=','blog')->take($this->getBatchPostLimit())->get();
+        $posts = Post::where('type','=','tumblr')->take($this->getBatchPostLimit())->get();
 
         foreach ($posts as $post){
             if($this->createBlogPost($post)){
@@ -102,7 +102,7 @@ class APIController extends Controller
             'tags'      =>  $post->tags,
             'slug'      =>  $post->caption,
             'caption'   =>  '<a href="'.$config['post_link'].'">'.$post->caption.'</a>',
-            'data64'    =>  base64_encode($this->getImage($post->file_name, 'blog')),
+            'data64'    =>  base64_encode($this->getImage($post->file_name, 'tumblr')),
             'link'      =>  $config['post_link'],
             'source_url'    =>  'http://'.$config['active_blog']
         ])){
@@ -135,11 +135,11 @@ class APIController extends Controller
      */
     public function publishSocialPost(Request $request){
         $post_id = $request->input('post_id');
-        $post = Post::where('id','=', $post_id);
+        $post = Post::find($post_id);
 
         if($post->count()){
-            if($this->createSocialPost($post->first())){
-                $this->deleteImage($post->first()->file_name, $post->first()->type);
+            if($this->createSocialPost($post)){
+                $this->deleteImage($post->file_name, $post->type);
                 $post->delete();
                 return response()->json(true);
             }
@@ -153,13 +153,24 @@ class APIController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function createSocialPost($post){
-        $fb_post = $this->publishToFacebook($post);
-        $pin = $this->publishToPinterest($post);
 
-        if($fb_post['id'] && $pin['id']){
-            return response()->json(true);
+        if($post->type === 'facebook'){
+            $fb_post = $this->publishToFacebook($post);
+
+            if($fb_post['id']){
+                return response()->json(true);
+            }
+            return response()->json(false);
         }
-        return response()->json(false);
+
+        if($post->type === 'pinterest'){
+            $pin = $this->publishToPinterest($post);
+
+            if($pin['id']){
+                return response()->json(true);
+            }
+            return response()->json(false);
+        }
     }
 
     /**
