@@ -43,7 +43,7 @@
                        aria-haspopup="true"
                        aria-expanded="false">
                         {{Auth::user()->name}}
-                        <i class="fa fa-user" aria-hidden="true"> </i> </span>
+                        <i class="fa fa-user" aria-hidden="true"> </i>
                     </a>
                     <ul class="dropdown-menu">
                         <li>
@@ -66,6 +66,6 @@
                 </li>
             @endif
             </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+        </div>
+    </div>
 </nav>
