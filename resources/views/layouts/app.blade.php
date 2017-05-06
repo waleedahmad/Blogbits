@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="/assets/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
     <link rel="stylesheet" type="text/css" href="/assets/lib/toastr/toastr.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/app.min.css">
-
 </head>
 <body @if(!Auth::check()) class="cover" @endif>
 @include('navbar')

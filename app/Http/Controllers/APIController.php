@@ -118,12 +118,7 @@ class APIController extends Controller
         return false;
     }
 
-    /**
-     * Show Tumblr blog posts
-     * @param Request $request
-     * @return \Illuminate\View\View
-     */
-    public function getPosts(Request $request){
+    public function getTumblrFeed(Request $request){
         $offset = ($request->offset) ? $request->offset : 0;
         $config = $this->getConfig();
         $posts = $this->client->getBlogPosts($config['active_blog'], [
@@ -131,7 +126,10 @@ class APIController extends Controller
             'offset'    =>  $offset,
             'tag'    =>  'models'
         ]);
-        return view('blog_posts')->with('blog', $posts)->with('offset', $offset + 5);
+        return response()->json([
+            'posts' => $posts->posts,
+            'count' =>  count($posts->posts)
+        ]);
     }
 
     /**

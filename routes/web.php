@@ -3,11 +3,24 @@
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
+Route::group([
+    'middleware'    =>  'guest',
+    'namespace'     =>  'Auth'
+], function(){
+    Route::get('auth/facebook', 'RegisterController@redirectToFacebookProvider');
+    Route::get('auth/facebook/callback', 'RegisterController@handleFacebookProviderCallback');
+    Route::get('auth/google', 'RegisterController@redirectToGoogleProvider');
+    Route::get('auth/google/callback', 'RegisterController@handleGoogleProviderCallback');
+});
+
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', 'ContentController@blogContent');
-    Route::get('/facebook', 'ContentController@facebookContent');
-    Route::get('/pinterest', 'ContentController@pinterestContent');
-    Route::get('/tumblr', 'APIController@getPosts');
+
+    Route::get('/api/posts/facebook', 'ContentController@getFacebookContent');
+    Route::get('/api/posts/pinterest', 'ContentController@getPinterestContent');
+    Route::get('/api/posts/tumblr', 'ContentController@getTumblrContent');
+    Route::get('/api/blog/feed', 'APIController@getTumblrFeed');
+    Route::delete('/api/posts', 'ContentController@deletePost');
+    Route::get('/api/posts/count', 'ContentController@getPostsCount');
 
     Route::post('/social/sync/fbAlbums', 'APIController@syncFacebookAlbums');
 
@@ -34,15 +47,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/config/{type}', 'ConfigController@config');
     Route::get('/config/posts/batchLimit','ConfigController@getBatchPostLimit');
 
+    Route::get('{all?}', function(){
+        return view('layouts.spa');
+    })->where('all', '([A-z\d-\/_.]+)?');
 
 });
 
-Route::group([
-    'middleware'    =>  'guest',
-    'namespace'     =>  'Auth'
-], function(){
-    Route::get('auth/facebook', 'RegisterController@redirectToFacebookProvider');
-    Route::get('auth/facebook/callback', 'RegisterController@handleFacebookProviderCallback');
-    Route::get('auth/google', 'RegisterController@redirectToGoogleProvider');
-    Route::get('auth/google/callback', 'RegisterController@handleGoogleProviderCallback');
-});

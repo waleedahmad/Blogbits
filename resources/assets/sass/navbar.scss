@@ -1,3 +1,17 @@
+.navbar{
+    border-radius : 0px;
+}
+
+.nav-tabs{
+    li a{
+        color:white;
+
+        &:hover{
+            color :#36465d;
+        }
+    }
+}
+
 .navbar-fixed-top {
     background-color: #222222;
     border-color: #464646;

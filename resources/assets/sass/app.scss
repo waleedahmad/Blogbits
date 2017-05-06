@@ -1,3 +1,8 @@
+@import "../../../public/assets/lib/bootstrap/dist/css/bootstrap.min.css";
+@import "../../../public/assets/lib/font-awesome/css/font-awesome.min.css";
+@import "../../../public/assets/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.css";
+@import "../../../public/assets/lib/toastr/toastr.min.css";
+
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
 html,body{
@@ -13,46 +18,20 @@ html,body{
 
 body{
 
-    @import "navbar";
-
     background  : #2A2B2E;
 
-    .container-fluid{
-        padding: 0px;
-        padding-top: 50px;
-    }
-
-    .navbar{
-        z-index: 2;
-        border-radius : 0px;
-    }
-
-    .nav-tabs{
-        li a{
-            color:white;
-
-            &:hover{
-                color :#36465d;
-            }
+    #root{
+        height: 100%;
+        width: 100%;
+        .container-fluid{
+            padding: 70px 0px 0px 0px;
+        }
+        a:hover {
+            cursor:pointer;
         }
     }
 
-    a:hover {
-        cursor:pointer;
-    }
-
-    #flash-message{
-        position: absolute;
-        top: 60px;
-        margin-left : auto;
-        margin-right : auto;
-        display: none;
-        width : 580px;
-
-        i{
-            margin-right : 10px;
-        }
-    }
+    @import "navbar";
 }
 
 

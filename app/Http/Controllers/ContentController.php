@@ -11,25 +11,45 @@ class ContentController extends Controller
 {
     /**
      * Render tumblr posts
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function blogContent(){
-        $posts = Post::where('type','=','tumblr')->simplePaginate(10);
-        return view('index')->with('posts', $posts);
+    public function getTumblrContent(Request $request){
+        $posts = Post::where('type','=','tumblr')->skip($request->skip)->take($request->take)->get()->toArray();
+        return response()->json([
+            'posts' =>  $posts,
+            'total' =>  Post::where('type','=','facebook')->count()
+        ]);
     }
 
     /**
      * Render social posts
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function facebookContent(){
-        $posts = Post::where('type','=','facebook')->simplePaginate(10);
-        return view('index')->with('posts', $posts);
+    public function getFacebookContent(Request $request){
+        $posts = Post::where('type','=','facebook')->skip($request->skip)->take($request->take)->get()->toArray();
+        return response()->json([
+            'posts' =>  $posts,
+            'total' =>  Post::where('type','=','facebook')->count()
+        ]);
     }
 
-    public function pinterestContent(){
-        $posts = Post::where('type','=','pinterest')->simplePaginate(10);
-        return view('index')->with('posts', $posts);
+
+    public function getPinterestContent(Request $request){
+        $posts = Post::where('type','=','pinterest')->skip($request->skip)->take($request->take)->get()->toArray();
+        return response()->json([
+            'posts' =>  $posts,
+            'total' =>  Post::where('type','=','pinterest')->count()
+        ]);
+    }
+
+    public function getPostsCount(){
+        return response()->json([
+            'tumblr'    =>  Post::where('type','=', 'tumblr')->count(),
+            'facebook'    =>  Post::where('type','=', 'facebook')->count(),
+            'pinterest'    =>  Post::where('type','=', 'pinterest')->count(),
+        ]);
     }
 
     /**
