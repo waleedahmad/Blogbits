@@ -13,7 +13,7 @@ const { mix } = require('laravel-mix');
 
 mix.react('resources/assets/js/app.js', 'public/assets/bundle')
    .sass('resources/assets/sass/app.scss', 'public/assets/bundle')
-    .version().disableNotifications();;
+    .version().disableNotifications();
 
 mix.extract(['jquery']);
 

@@ -2,12 +2,12 @@ import React from "react";
 import Content from './Content';
 import Sidebar from './layout/Sidebar';
 import Navbar from './layout/Navbar';
+import {Route} from 'react-router';
 
 class App extends React.Component{
 
     constructor(props){
         super(props);
-
         this.state = {
             sidebar : {
                 counts : {
@@ -43,7 +43,10 @@ class App extends React.Component{
             <div>
                 <Navbar counts={this.state.sidebar.counts} countUpdate={this.getPostsCount.bind(this)}/>
                 <div className="container-fluid">
-                    <Sidebar counts={this.state.sidebar.counts}/>
+
+                    <Route path="/" render={(props) => (
+                        <Sidebar counts={this.state.sidebar.counts} {...props}/>
+                    )}/>
                     <Content countUpdate={this.getPostsCount.bind(this)}/>
                 </div>
             </div>

@@ -25,6 +25,8 @@ class Navbar extends React.Component{
     }
 
     syncContent(service, uri){
+        toastr.info(`Syncing ${service} content`);
+
         $.ajax({
             type : 'GET',
             url : `/content/sync${uri}`,

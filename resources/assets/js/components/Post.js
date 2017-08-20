@@ -25,7 +25,7 @@ class Post extends React.Component {
     }
 
     busy(action) {
-        bootbox.alert(`Source is busy perform ${action} action on target post, please wait for refresh`);
+        toastr.warning(`Unable to ${action}, Resource is busy!`);
     }
 
     onTagsChange(id) {

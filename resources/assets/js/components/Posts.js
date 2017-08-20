@@ -13,6 +13,7 @@ class Posts extends React.Component{
             url : props.match.url,
             message : 'Loading posts'
         };
+        window.document.title = 'Posts - Blogbits';
     }
 
     componentDidMount(){
@@ -48,6 +49,7 @@ class Posts extends React.Component{
                     });
                 }
             }.bind(this)
+
         });
     }
 
@@ -99,6 +101,7 @@ class Posts extends React.Component{
     }
 
     delete(id){
+        toastr.info('Deleting...');
         $.ajax({
             type : 'DELETE',
             url : '/api/posts',
@@ -116,6 +119,7 @@ class Posts extends React.Component{
     }
 
     publish(id, service){
+        toastr.info('Publishing...');
         $.ajax({
             type : 'POST',
             url : `/content/post/${service}`,
