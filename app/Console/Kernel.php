@@ -31,7 +31,6 @@ class Kernel extends ConsoleKernel
             $time = $this->getSchedulerTimings();
             $schedule->command('posts:publish')
                 ->{$this->getSchedulerFrequency()}()
-                ->timezone('Asia/Karachi')
                 ->when(function () use ($time){
                     return date('H') >= $time['start'] && date('H') <= $time['end'];
                 });
