@@ -6,21 +6,33 @@ import 'bootstrap-tagsinput';
 class Posts extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = this.getInitialState();
+        window.document.title = 'Posts - Blogbits';
+    }
+
+    getInitialState(){
+        return {
             posts : [],
             count : 0,
             take : 10,
-            url : props.match.url,
             message : 'Loading posts'
         };
-        window.document.title = 'Posts - Blogbits';
     }
 
     componentDidMount(){
         this.getPosts(this.state.take);
     }
 
+    onRouteChanged() {
+        this.setState(this.getInitialState(), () => {
+            this.getPosts(this.state.take);
+        });
+    }
+
     componentDidUpdate(prevProps, prevState){
+        if (this.props.location !== prevProps.location) {
+            this.onRouteChanged();
+        }
         this.initPostTags();
     }
 
@@ -28,7 +40,7 @@ class Posts extends React.Component{
         this.removeScrollEvent();
         $.ajax({
             type : 'GET',
-            url : this.getApiEndPoint(this.state.url),
+            url : this.getApiEndPoint(this.props.location.pathname),
             data : {
                 skip : this.state.count,
                 take :  offset
@@ -74,7 +86,7 @@ class Posts extends React.Component{
     registerScrollEvent(){
         $(window).on('scroll', function() {
             if($(window).scrollTop() + $(window).height() === $(document).height()) {
-                this.getPosts(this.state.count + this.state.take)
+                this.getPosts(this.state.take)
             }
         }.bind(this));
     }

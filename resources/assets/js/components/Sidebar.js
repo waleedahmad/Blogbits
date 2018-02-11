@@ -42,12 +42,6 @@ class Sidebar extends React.Component{
                         Pinterest Content <div className="badge pull-right">{this.state.counts.pinterest}</div>
                     </Link>
                 </li>
-
-                <li >
-                    <Link to="/tumblr" className={this.props.location.pathname === '/tumblr' ? "active" : ''}> <i className="fa fa-tumblr-square" aria-hidden="true"></i>
-                        Tumblr Feed
-                    </Link>
-                </li>
             </div>
         );
     }

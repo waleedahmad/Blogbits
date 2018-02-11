@@ -1,9 +1,8 @@
-
-const ReactDOM = require('react-dom');
 import React from "react";
-import Routes from './components/Routes';
+import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
 import boostrap from 'bootstrap';
-
+import Root from './components/Root';
 
 toastr.options = {
     "debug": false,
@@ -17,6 +16,8 @@ toastr.options = {
 };
 
 ReactDOM.render(
-    <Routes />,
+    <BrowserRouter>
+        <Root/>
+    </BrowserRouter>,
     document.getElementById('root')
 );

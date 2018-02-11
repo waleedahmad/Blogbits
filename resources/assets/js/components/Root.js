@@ -1,10 +1,10 @@
 import React from "react";
-import Content from './Content';
-import Sidebar from './layout/Sidebar';
-import Navbar from './layout/Navbar';
+import PostContainer from './PostContainer';
+import Sidebar from './Sidebar';
+import Navbar from './Navbar';
 import {Route} from 'react-router';
 
-class App extends React.Component{
+class Root extends React.Component{
 
     constructor(props){
         super(props);
@@ -43,15 +43,14 @@ class App extends React.Component{
             <div>
                 <Navbar counts={this.state.sidebar.counts} countUpdate={this.getPostsCount.bind(this)}/>
                 <div className="container-fluid">
-
                     <Route path="/" render={(props) => (
                         <Sidebar counts={this.state.sidebar.counts} {...props}/>
                     )}/>
-                    <Content countUpdate={this.getPostsCount.bind(this)}/>
+                    <PostContainer countUpdate={this.getPostsCount.bind(this)}/>
                 </div>
             </div>
         );
     }
 }
 
-export default App;
+export default Root;
