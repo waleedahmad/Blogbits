@@ -10,6 +10,11 @@ const { mix } = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.autoload({
+    jquery : ['$', 'jquery' , 'jQuery', 'jQuery', 'window.jQuery'],
+    toastr : ['toastr'],
+    bootbox : ['bootbox']
+});
 
 mix.react('resources/assets/js/app.js', 'public/assets/bundle/js')
     .sass('resources/assets/sass/app.scss', 'public/assets/bundle/css')
@@ -26,8 +31,3 @@ if (!mix.inProduction()) {
     });
 }
 
-mix.autoload({
-    jquery: ['$', 'window.jQuery', 'jQuery'],
-    toastr : ['toastr'],
-    bootbox : ['bootbox']
-});
