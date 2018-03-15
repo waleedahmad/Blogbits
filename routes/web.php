@@ -41,14 +41,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('/content/deleteAll/{type}', 'ContentController@deleteAllPosts');
     Route::post('/content/update/tags', 'ContentController@updateTags');
     Route::post('/content/backup', 'ContentController@backupAllPosts');
-    Route::get('/config/', 'ConfigController@configView');
+
+
+    Route::get('/config', 'ConfigController@getConfig');
     Route::post('/config/user', 'ConfigController@userConfig');
     Route::post('/config/scheduler/timings', 'ConfigController@updateSchedulerTimings');
     Route::post('/config/{type}', 'ConfigController@config');
     Route::get('/config/posts/batchLimit','ConfigController@getBatchPostLimit');
 
     Route::get('{all?}', function(){
-        return view('layouts.spa');
+        return view('layouts.app');
     })->where('all', '([A-z\d-\/_.]+)?');
 
 });

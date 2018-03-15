@@ -25,21 +25,33 @@ class Sidebar extends React.Component{
         return(
             <div id="sidebar" className="col-xs-12 col-sm-12 col-lg-2 col-md-3">
                 <li>
-                    <Link to="/" className={this.props.location.pathname === '/' ? "active" : ''} > <i className="fa fa-tumblr-square" aria-hidden="true"></i>
-                        Tumblr Content <div className="badge pull-right">{this.state.counts.tumblr}</div>
+                    <Link to="/"
+                          className={this.props.location.pathname === '/' ? "active" : ''} >
+                        <i className="fa fa-tumblr-square" aria-hidden="true"></i>
+                        Tumblr Content
+                        <div className="badge pull-right">{this.state.counts.tumblr}</div>
 
                     </Link>
                 </li>
 
                 <li>
-                    <Link to="/facebook" className={this.props.location.pathname === '/facebook' ? "active" : ''}> <i className="fa fa-facebook" aria-hidden="true"></i>
-                        Facebook Content <div className="badge pull-right">{this.state.counts.facebook}</div>
+                    <Link to="/posts/facebook"
+                          className={this.props.location.pathname === '/posts/facebook' ? "active" : ''}>
+                        <i className="fa fa-facebook" aria-hidden="true"></i>
+                        Facebook Content
+                        <div className="badge pull-right">{this.state.counts.facebook}</div>
                     </Link>
                 </li>
 
-                <li >
-                    <Link to="/pinterest" className={this.props.location.pathname === '/pinterest' ? "active" : ''}> <i className="fa fa-pinterest-p" aria-hidden="true"></i>
+                <li>
+                    <Link to="/posts/pinterest" className={this.props.location.pathname === '/posts/pinterest' ? "active" : ''}> <i className="fa fa-pinterest-p" aria-hidden="true"></i>
                         Pinterest Content <div className="badge pull-right">{this.state.counts.pinterest}</div>
+                    </Link>
+                </li>
+
+                <li>
+                    <Link to="/settings" className={this.props.location.pathname === '/settings' ? "active" : ''}> <i className="fa fa-cogs" aria-hidden="true"></i>
+                        Settings
                     </Link>
                 </li>
             </div>

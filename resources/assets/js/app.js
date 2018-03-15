@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
-import boostrap from 'bootstrap';
+import 'bootstrap';
 import Root from './components/Root';
 
 toastr.options = {
@@ -15,9 +15,11 @@ toastr.options = {
     "newestOnTop" : false
 };
 
-ReactDOM.render(
-    <BrowserRouter>
-        <Root/>
-    </BrowserRouter>,
-    document.getElementById('root')
-);
+if($('#root').length){
+    ReactDOM.render(
+        <BrowserRouter>
+            <Root/>
+        </BrowserRouter>,
+        document.getElementById('root')
+    );
+}

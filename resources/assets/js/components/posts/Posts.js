@@ -7,6 +7,7 @@ class Posts extends React.Component{
     constructor(props) {
         super(props);
         this.state = this.getInitialState();
+        this._isMounted = false;
         window.document.title = 'Posts - Blogbits';
     }
 
@@ -20,7 +21,12 @@ class Posts extends React.Component{
     }
 
     componentDidMount(){
+        this._isMounted = true;
         this.getPosts(this.state.take);
+    }
+
+    componentWillUnmount(){
+        this._isMounted = false;
     }
 
     onRouteChanged() {
@@ -46,19 +52,21 @@ class Posts extends React.Component{
                 take :  offset
             },
             success : function(res){
-                this.setState({
-                    posts : this.state.posts.concat(res.posts),
-                    count : this.state.count + res.posts.length
-                });
-
-                if(res.total > this.state.count){
-                    this.registerScrollEvent()
-                }
-
-                if(!res.posts.length){
+                if(this._isMounted){
                     this.setState({
-                        message : 'No more posts to load'
+                        posts : this.state.posts.concat(res.posts),
+                        count : this.state.count + res.posts.length
                     });
+
+                    if(res.total > this.state.count){
+                        this.registerScrollEvent()
+                    }
+
+                    if(!res.posts.length){
+                        this.setState({
+                            message : 'No more posts to load'
+                        });
+                    }
                 }
             }.bind(this)
 
@@ -70,10 +78,10 @@ class Posts extends React.Component{
             case '/':
                 return '/api/posts/tumblr';
                 break;
-            case '/facebook':
+            case '/posts/facebook':
                 return '/api/posts/facebook';
                 break;
-            case '/pinterest' :
+            case '/posts/pinterest' :
                 return '/api/posts/pinterest';
                 break;
             case '/tumblr' :

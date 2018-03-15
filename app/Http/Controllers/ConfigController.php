@@ -10,9 +10,25 @@ use Illuminate\Support\Facades\Auth;
 
 class ConfigController extends Controller
 {
-    public function configView()
+    public function getConfig()
     {
-        return view('config')->with('config', $this->getConfig());
+        return response()->json([
+            'blog' => Config::where('type','=', 'blog')->pluck('value', 'name'),
+            'social' => Config::where('type','=', 'social')->pluck('value', 'name'),
+            'scheduler' => Config::where('type','=', 'scheduler')->pluck('value', 'name'),
+            'frequencies' => [
+                'everyMinute',
+                'everyFiveMinutes',
+                'everyTenMinutes',
+                'everyThirtyMinutes',
+                'hourly'
+            ],
+            'user' => [
+                'name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+                'username' => Auth::user()->username,
+            ]
+        ]);
     }
 
     /**
@@ -23,30 +39,12 @@ class ConfigController extends Controller
      */
     public function config(Request $request, $type)
     {
-        if ($request->isMethod('POST')) {
-            switch ($type) {
-                case 'blog':
-                    if ($this->updateConfig($request->all(), $type)) {
-                        session()->flash('blog_flash', 'Blog config updated.');
-                        return redirect('/config#blog');
-                    }
-                    break;
-                case 'scheduler':
-                    if ($this->updateConfig($request->all(), $type)) {
-                        session()->flash('scheduler_flash', 'Scheduler config updated.');
-                        return redirect('/config#scheduler');
-                    }
-                    break;
-                case 'social':
-                    if ($this->updateConfig($request->all(), $type)) {
-                        session()->flash('scheduler_flash', 'Social config updated.');
-                        return redirect('/config#social');
-                    }
-                    break;
-                default:
-                    return redirect('/config');
-            }
+        if ($this->updateConfig($request->all(), $type)) {
+            return response()->json([
+                'updated' => true
+            ]);
         }
+
     }
 
     /**
@@ -80,46 +78,6 @@ class ConfigController extends Controller
     }
 
     /**
-     * Return blogbits app config array
-     * @return array
-     */
-    public function getConfig()
-    {
-        return [
-            'post_link' => Config::where('name', '=', 'post_link')->first()->value,
-            'pinterest' => Config::where('name', '=', 'pinterest')->first()->value,
-            'facebook' => Config::where('name', '=', 'facebook')->first()->value,
-            'active_blog' => Config::where('name', '=', 'active_blog')->first()->value,
-            'sync_folder' => Config::where('name', '=', 'sync_folder')->first()->value,
-            'default_tags' => Config::where('name', '=', 'default_tags')->first()->value,
-            'batch_post_limit' => Config::where('name', '=', 'batch_post_limit')->first()->value,
-            'scheduler_frequency' => Config::where('name', '=', 'scheduler_frequency')->first()->value,
-            'scheduler_start_time' => Config::where('name', '=', 'scheduler_start_time')->first()->value,
-            'scheduler_end_time' => Config::where('name', '=', 'scheduler_end_time')->first()->value,
-
-            'facebook_pageid' => Config::where('name', '=', 'facebook_pageid')->first()->value,
-            'pinterest_username' => Config::where('name', '=', 'pinterest_username')->first()->value,
-            'pinterest_board' => Config::where('name', '=', 'pinterest_board')->first()->value,
-            'pinterest_token' => Config::where('name', '=', 'pinterest_token')->first()->value,
-            'facebook_sync_folder' => Config::where('name', '=', 'facebook_sync_folder')->first()->value,
-            'pinterest_sync_folder' => Config::where('name', '=', 'pinterest_sync_folder')->first()->value,
-            'social_scheduler_frequency' => Config::where('name', '=', 'social_scheduler_frequency')->first()->value,
-            'social_scheduler_start_time' => Config::where('name', '=', 'social_scheduler_start_time')->first()->value,
-            'social_scheduler_end_time' => Config::where('name', '=', 'social_scheduler_end_time')->first()->value,
-
-            'user_email' => Auth::user()->email,
-            'frequencies' => [
-                'everyMinute',
-                'everyFiveMinutes',
-                'everyTenMinutes',
-                'everyThirtyMinutes',
-                'hourly'
-            ]
-
-        ];
-    }
-
-    /**
      * Return Post batch limit
      * @return \Illuminate\Http\JsonResponse
      */
@@ -135,20 +93,31 @@ class ConfigController extends Controller
      */
     public function userConfig(Request $request)
     {
-        $email = $request->input('email');
-        $password = $request->input('password');
 
-        if ($this->userValidator(
-            $request->all(),
-            $this->getUpdateRules($email, $password)
-        )->passes()
-        ) {
-            if ($this->updateUser($this->getUpdateUser($email, $password))) {
-                session()->flash('account_flash', 'Account settings updated.');
-                return redirect('/config#account');
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|' . ($request->email != Auth::user()->email ? 'email|unique:users,email' : ''),
+            'username' => 'required|' . ($request->username != Auth::user()->username ? 'unique:users,username' : ''),
+            'name' => 'required',
+            'password' => '' . ($request->password ? 'min:6' : ''),
+        ]);
+        if ($validator->passes()) {
+            if(Auth::user()->update([
+                'email' => $request->email,
+                'username' => $request->username,
+                'name' => $request->name,
+                'password' => $request->password ? bcrypt($request->password) : ''
+            ])){
+                return response()->json([
+                    'updated' => true,
+                ]);
             }
+        } else {
+            return response()->json([
+                'updated' => false
+            ]);
         }
     }
+
 
     /**
      * return User to be updated
@@ -170,30 +139,6 @@ class ConfigController extends Controller
     }
 
     /**
-     * Update User in database
-     * @param $user
-     * @return mixed
-     */
-    public function updateUser($user)
-    {
-        return User::where('email', '=', Auth::user()->email)->update($user);
-    }
-
-    /**
-     * Get update rules for validator
-     * @param $email
-     * @param $password
-     * @return array
-     */
-    protected function getUpdateRules($email, $password)
-    {
-        return [
-            'email' => ($this->isEmailChanged($email)) ? '|unique:users' : '',
-            'password' => ($password) ? 'min:6' : ''
-        ];
-    }
-
-    /**
      * Check if user requested an Email change
      * @param $email
      * @return bool
@@ -201,20 +146,6 @@ class ConfigController extends Controller
     public function isEmailChanged($email)
     {
         return Auth::user()->email != $email;
-    }
-
-    /**
-     * User Validator
-     * @param $user
-     * @param $extra
-     * @return mixed
-     */
-    public function userValidator($user, $extra)
-    {
-        return Validator::make($user, [
-            'email' => 'required|email' . $extra['email'],
-            'password' => $extra['password']
-        ]);
     }
 
     /**

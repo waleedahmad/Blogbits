@@ -1,5 +1,6 @@
 import React from "react";
-import PostContainer from './PostContainer';
+import Posts from './posts/Posts';
+import Config from './config/Config';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import {Route} from 'react-router';
@@ -46,7 +47,10 @@ class Root extends React.Component{
                     <Route path="/" render={(props) => (
                         <Sidebar counts={this.state.sidebar.counts} {...props}/>
                     )}/>
-                    <PostContainer countUpdate={this.getPostsCount.bind(this)}/>
+                    <Route exact path="/(|posts/facebook|posts/pinterest)" render={(props) => (
+                        <Posts countUpdate={this.getPostsCount.bind(this)} {...props}/>
+                    )}/>
+                    <Route path="/settings" component={Config} />
                 </div>
             </div>
         );

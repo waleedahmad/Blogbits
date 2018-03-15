@@ -20,11 +20,13 @@ class Navbar extends React.Component{
         });
     }
 
-    postBatch(){
+    postBatch(e){
+        e.preventDefault();
         this.props.countUpdate();
     }
 
-    syncContent(service, uri){
+    syncContent(service, uri, e){
+        e.preventDefault();
         toastr.info(`Syncing ${service} content`);
 
         $.ajax({
@@ -91,7 +93,10 @@ class Navbar extends React.Component{
 
                         <ul className="nav navbar-nav navbar-right">
                             <li>
-                                <Link to="#" id="post-batch" onClick={this.postBatch.bind(this)}> <i className="fa fa-paper-plane" aria-hidden="true"></i> Post Batch {this.state.counts.tumblr}</Link>
+                                <Link to="#"
+                                      id="post-batch"
+                                      onClick={this.postBatch.bind(this)}>
+                                    <i className="fa fa-paper-plane" aria-hidden="true"></i> Post Batch {this.state.counts.tumblr}</Link>
                             </li>
 
                             <li>
@@ -130,7 +135,9 @@ class Navbar extends React.Component{
 
                                     <li className="nav-divider"></li>
 
-                                    <li><a href="/config">Settings</a></li>
+                                    <li>
+                                        <Link to="/settings">Settings</Link>
+                                    </li>
                                     <li><a href="/logout">Logout</a></li>
                                 </ul>
                             </li>

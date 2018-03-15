@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -196,5 +197,10 @@ class RegisterController extends Controller
      */
     private function checkOccurrences($username){
         return User::where('username','=',$username)->count();
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        return redirect('/');
     }
 }

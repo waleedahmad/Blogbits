@@ -11,11 +11,20 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.react('resources/assets/js/app.js', 'public/assets/bundle')
-   .sass('resources/assets/sass/app.scss', 'public/assets/bundle')
-    .version().disableNotifications();
+mix.react('resources/assets/js/app.js', 'public/assets/bundle/js')
+    .sass('resources/assets/sass/app.scss', 'public/assets/bundle/css')
+    .version()
+    .disableNotifications();
 
-mix.extract(['jquery']);
+if (!mix.inProduction()) {
+    mix.webpackConfig({
+        devtool: 'source-map'
+    }).sourceMaps();
+
+    mix.options({
+        processCssUrls: false
+    });
+}
 
 mix.autoload({
     jquery: ['$', 'window.jQuery', 'jQuery'],

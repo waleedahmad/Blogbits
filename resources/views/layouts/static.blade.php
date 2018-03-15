@@ -7,11 +7,12 @@
     <link rel="stylesheet" type="text/css" href="{{mix('/assets/bundle/css/app.css')}}">
 </head>
 <body>
-
-<div id="root">
-
+@include('navbar')
+<main class="container-fluid">
+    <div id="flash-message" class="alert" role="alert">...</div>
+    @yield('content')
+</main>
 </div>
-
 @if(env('APP_ENV') === 'local')
     <script type="text/javascript" src="{{mix('/assets/bundle/js/app.js')}}"></script>
 @else

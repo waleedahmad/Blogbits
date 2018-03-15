@@ -1,18 +1,35 @@
 .settings{
-    margin-top: 20px;
-}
-.config{
-    min-height: 400px;
-    height : auto;
-    background-color:white;
-    padding: 20px;
-    margin-bottom : 50px;
 
-    .form-inline{
-        margin-top: 50px;
+    .page-header{
+        margin-top: 0px;
+        h2{
+            color:white;
+            margin-top: 0px;
+        }
+    }
 
-        input{
-            margin : 0px 10px 0px 10px;
+
+    .config{
+        min-height: 400px;
+        height : auto;
+        background-color:white;
+        padding: 20px;
+        margin-bottom : 50px;
+
+        .form-inline{
+            margin-top: 50px;
+
+            input{
+                margin : 0px 10px 0px 10px;
+            }
+        }
+
+        h3{
+            margin-top: 0px;
+        }
+
+        .block{
+            margin-bottom: 30px;
         }
     }
 }
