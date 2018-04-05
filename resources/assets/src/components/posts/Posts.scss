@@ -1,0 +1,79 @@
+.posts, .settings{
+  position:relative;
+  padding-top: 10px;
+
+  @media (min-width : 770px) {
+    float: none !important;
+    margin: 0 auto;
+    display: block;
+  }
+
+}
+.post{
+  &:hover{
+    .edit-post{
+      display: block;
+    }
+  }
+
+  .edit-post{
+    position : absolute;
+    right : 30px;
+    margin-top: 10px;
+    color:#36465d;
+    font-size: 20px;
+    display: none;
+
+    &:hover{
+      color:grey;
+    }
+  }
+
+  .bootstrap-tagsinput{
+    margin-top: 20px;
+    clear:both;
+    width : 100%;
+    display: block;
+
+    input{
+      width : 50px;
+    }
+  }
+
+  .post-now{
+    margin-right : 5px;
+  }
+
+  .image-caption{
+    width: 100%;
+  }
+
+  .image-caption, .update-post{
+    display:inline-block;
+    float:left;
+  }
+
+  .update-post{
+    margin: 5px;
+  }
+
+  .post-now, .delete-now{
+    margin-top: 15px;
+    display : none;
+  }
+
+  h3, .image-caption{
+    display: inline-block;
+  }
+
+  .notes{
+    font-size: 20px;
+  }
+
+
+  &:hover{
+    .post-now,.delete-now{
+      display: inline-block;
+    }
+  }
+}

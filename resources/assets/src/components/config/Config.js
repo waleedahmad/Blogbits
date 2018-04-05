@@ -3,6 +3,7 @@ import BlogConfig from './BlogConfig';
 import SchedulerConfig from './SchedulerConfig';
 import UserConfig from './UserConfig';
 import SocialConfig from './SocialConfig';
+require('./Config.scss');
 
 class Config extends React.Component{
     constructor(props) {
@@ -95,7 +96,7 @@ class Config extends React.Component{
 
     render(){
         return (
-            <div className="grid col-xs-12 col-sm-12 col-lg-8 col-md-6 settings">
+            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-8 settings">
 
                 <div className="page-header">
                     <h2>

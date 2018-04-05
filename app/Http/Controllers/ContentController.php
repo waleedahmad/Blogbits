@@ -52,10 +52,15 @@ class ContentController extends Controller
         ]);
     }
 
+    public function getPost($id){
+        return response()->json(Post::find($id));
+    }
+
     /**
      * Delete a single post
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function deletePost(Request $request){
         $post_id = $request->input('post_id');
@@ -76,6 +81,7 @@ class ContentController extends Controller
      * Delete all posts
      * @param $type
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function deleteAllPosts($type){
         $posts = Post::where('type','=', $type)->get();
@@ -104,24 +110,17 @@ class ContentController extends Controller
     /**
      * @param Request $request
      * Update blog post tags
+     * @return \Illuminate\Http\JsonResponse
      */
     public function updateTags(Request $request){
         $tags = $request->input('tags');
         $post_id = $request->input('post_id');
 
-        Post::where('id','=', $post_id)->update([
-            'tags'  => $tags
-        ]);
-    }
-
-    /**
-     * Edit posts
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function editPost($id){
-        $post = Post::where('id', '=', $id)->first();
-        return view('edit_post')->with('post' , $post);
+        return response()->json(
+            Post::where('id','=', $post_id)->update([
+                'tags'  => $tags
+            ]) ? true : false
+        );
     }
 
     public function updatePost(Request $request){
@@ -131,13 +130,16 @@ class ContentController extends Controller
         if(Post::where('id', '=', $id)->update([
             'caption'   =>  $caption
         ])){
-            return redirect('/');
+            return response()->json(true);
+        }else{
+            return response()->json(false);
         }
     }
 
     /**
      * Backup all posts to sync folders
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function backupAllPosts(){
         $posts = Post::all();

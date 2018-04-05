@@ -1,4 +1,7 @@
 const { mix } = require('laravel-mix');
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 
 /*
  |--------------------------------------------------------------------------
@@ -16,18 +19,40 @@ mix.autoload({
     bootbox : ['bootbox']
 });
 
-mix.react('resources/assets/js/app.js', 'public/assets/bundle/js')
-    .sass('resources/assets/sass/app.scss', 'public/assets/bundle/css')
+mix.react('resources/assets/src/app.js', 'public/assets/bundle')
     .version()
     .disableNotifications();
 
-if (!mix.inProduction()) {
-    mix.webpackConfig({
-        devtool: 'source-map'
-    }).sourceMaps();
+mix.webpackConfig({
+    module: {
+        rules: [
+            {
+                test:  /\.s[ac]ss$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use : [
+                        {
+                            loader : 'css-loader',
+                        },
+                        {
+                            loader : 'postcss-loader',
+                        },
+                        {
+                            loader : 'sass-loader',
 
-    mix.options({
-        processCssUrls: false
-    });
-}
+                        }
+                    ]
+                })
+            }
+        ]
+    },
+    plugins: [
+        new ExtractTextPlugin('[name].[contenthash].css')
+    ],
+    devtool : 'source-map'
+}).sourceMaps();
+
+mix.options({
+    processCssUrls: false
+});
 

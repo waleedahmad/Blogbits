@@ -1,5 +1,6 @@
 import React from "react";
 import Posts from './posts/Posts';
+import EditPost from './posts/EditPost';
 import Config from './config/Config';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -43,15 +44,16 @@ class Root extends React.Component{
         return (
             <div>
                 <Navbar counts={this.state.sidebar.counts} countUpdate={this.getPostsCount.bind(this)}/>
-                <div className="container-fluid">
-                    <Route path="/" render={(props) => (
-                        <Sidebar counts={this.state.sidebar.counts} {...props}/>
-                    )}/>
-                    <Route exact path="/(|posts/facebook|posts/pinterest)" render={(props) => (
-                        <Posts countUpdate={this.getPostsCount.bind(this)} {...props}/>
-                    )}/>
-                    <Route path="/settings" component={Config} />
-                </div>
+                <Route path="/" render={(props) => (
+                    <Sidebar counts={this.state.sidebar.counts} {...props}/>
+                )}/>
+                <Route exact path="/(|posts/facebook|posts/pinterest)" render={(props) => (
+                    <Posts countUpdate={this.getPostsCount.bind(this)} {...props}/>
+                )}/>
+                <Route exact path="/post/edit/:id" render={(props) => (
+                    <EditPost {...props}/>
+                )}/>
+                <Route path="/settings" component={Config} />
             </div>
         );
     }

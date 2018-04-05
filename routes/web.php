@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/blog/feed', 'APIController@getTumblrFeed');
     Route::delete('/api/posts', 'ContentController@deletePost');
     Route::get('/api/posts/count', 'ContentController@getPostsCount');
+    Route::get('/api/post/{id}', 'ContentController@getPost');
 
     Route::post('/social/sync/fbAlbums', 'APIController@syncFacebookAlbums');
 
@@ -28,8 +29,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/content/sync/{service}', 'SyncController@syncSocialContent');
 
     Route::delete('/content/delete', 'ContentController@deletePost');
-    Route::get('/content/edit/{id}', 'ContentController@editPost');
     Route::post('/content/update', 'ContentController@updatePost');
+    Route::post('/content/update/tags', 'ContentController@updateTags');
+
 
     Route::post('/content/post/tumblr', 'APIController@publishBlogPost');
     Route::post('/content/post/facebook', 'APIController@publishSocialPost');
@@ -39,7 +41,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/content/post/batch', 'APIController@publishPostBatch');
     Route::get('/content/user/followers', 'APIController@getClient');
     Route::delete('/content/deleteAll/{type}', 'ContentController@deleteAllPosts');
-    Route::post('/content/update/tags', 'ContentController@updateTags');
     Route::post('/content/backup', 'ContentController@backupAllPosts');
 
 

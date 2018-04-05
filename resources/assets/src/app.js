@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 import 'bootstrap';
-import Root from './components/Root';
+import Root from './components/Root'
+require('./app.scss');
 
 toastr.options = {
     "debug": false,

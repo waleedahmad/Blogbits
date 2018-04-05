@@ -13,6 +13,7 @@
     "axios": "^0.15.3",
     "babel-preset-react": "^6.24.1",
     "cross-env": "^3.2.3",
+    "extract-text-webpack-plugin": "2.1.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
     "laravel-mix": "0.*",
@@ -28,6 +29,7 @@
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-tagsinput": "^3.19.0",
     "striptags": "^3.0.1",
     "toastr": "^2.1.2"
   }

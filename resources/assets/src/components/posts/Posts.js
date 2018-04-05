@@ -1,6 +1,6 @@
 import React from 'react';
 import Post from './Post';
-import 'bootstrap-tagsinput';
+require('./Posts.scss');
 
 
 class Posts extends React.Component{
@@ -39,7 +39,6 @@ class Posts extends React.Component{
         if (this.props.location !== prevProps.location) {
             this.onRouteChanged();
         }
-        this.initPostTags();
     }
 
     getPosts(offset){
@@ -103,23 +102,6 @@ class Posts extends React.Component{
         $(window).off('scroll');
     }
 
-    initPostTags(){
-        let $tags = $('.tags');
-        $($tags).tagsinput({
-            allowDuplicates: false,
-            trimValue: true
-        });
-
-        $($tags).off('itemAdded').on('itemAdded', function(event) {
-            var tags = $(this).tagsinput('items').join();
-            console.log(tags);
-        });
-
-        $($tags).off('itemRemoved').on('itemRemoved', function(event) {
-            alert('Update tags');
-        });
-    }
-
     delete(id){
         toastr.info('Deleting...');
         $.ajax({
@@ -166,9 +148,9 @@ class Posts extends React.Component{
     render(){
 
         return (
-            <div className="grid col-xs-12 col-sm-12 col-lg-4 col-md-4">
+            <div className="posts col-xs-12 col-sm-12 col-md-5 col-lg-4">
                 {this.state.posts.length ? this.state.posts.map(function(post){
-                    return <Post key={post.id} post={post} delete={this.delete.bind(this)} publish={this.publish.bind(this)}/>
+                    return <Post key={post.id} action={'view'} post={post} delete={this.delete.bind(this)} publish={this.publish.bind(this)}/>
                 }.bind(this)) : <div className="alert alert-info">{this.state.message}</div>}
             </div>
         );
