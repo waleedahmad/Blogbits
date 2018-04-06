@@ -27,7 +27,7 @@ class EditPost extends React.Component {
 
     render() {
         return (
-            <div className="grid col-xs-12 col-sm-12 col-lg-4 col-md-4">
+            <div className="posts col-xs-12 col-sm-12 col-md-5 col-lg-4">
                 {
                     this.state.post ? <Post action={'edit'} key={this.state.post.id} post={this.state.post}/> : <div className="alert alert-info">{this.state.message}</div>}
                 }
