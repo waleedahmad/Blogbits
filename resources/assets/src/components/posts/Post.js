@@ -2,6 +2,8 @@ import React from 'react';
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
 import Link from "react-router-dom/es/Link";
+import ProgressiveImage from "react-progressive-image";
+
 
 
 class Post extends React.Component {
@@ -86,7 +88,13 @@ class Post extends React.Component {
                         ) : ''
                     }
 
-                    <img src={'/storage/' + this.props.post.uri}/>
+                    <ProgressiveImage
+                        src={'/storage/' + this.props.post.uri}
+                        placeholder={require('../../img/timer.gif')}>
+                        {(src, loading) => (
+                            <img style={{ opacity: loading ? 0.5 : 1 }} src={src} alt='an image'/>
+                        )}
+                    </ProgressiveImage>
                     {
                         this.props.action === 'view' ?
                             <div className="caption">

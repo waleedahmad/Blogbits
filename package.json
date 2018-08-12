@@ -27,6 +27,7 @@
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",
+    "react-progressive-image": "^0.3.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-tagsinput": "^3.19.0",
