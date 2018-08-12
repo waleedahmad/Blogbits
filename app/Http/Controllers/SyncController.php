@@ -74,7 +74,8 @@ class SyncController extends Controller
         $ext    = 	$this->getFileExtension($image);
         $id     =   $this->getRandomID();
         $uri 	= 	$type.'/'.$id.'.'.$ext;
-        $tags   =   ($caption) ? $this->getPostTagsFromCaption($this->getSafeImageName($image)). ','.Config::where('name','=', 'default_tags')->first()->value : '';
+        $default_tag = $this->getConfig('default_tags');
+        $tags   =   ($caption) ? $this->getPostTagsFromCaption($this->getSafeImageName($image)). ','. $default_tag : '';
 
         $post = new Post([
             'caption'   =>  $caption,
@@ -134,16 +135,15 @@ class SyncController extends Controller
      * @return mixed
      */
     public function getAllImages($type){
-        if($type === 'tumblr'){
-            return File::allFiles(env('SYNC_FOLDER'));
-        }
-
-        if($type === 'facebook'){
-            return File::allFiles(env('FACEBOOK_SYNC_FOLDER'));
-        }
-
-        if($type === 'pinterest'){
-            return File::allFiles(env('PINTEREST_SYNC_FOLDER'));
+        switch($type){
+            case 'tumblr':
+                return File::allFiles($this->getConfig('sync_folder'));
+            case 'facebook':
+                return File::allFiles($this->getConfig('facebook_sync_folder'));
+            case 'pinterest':
+                return File::allFiles($this->getConfig('pinterest_sync_folder'));
+            default:
+                return false;
         }
     }
 
@@ -172,5 +172,9 @@ class SyncController extends Controller
      */
     function getFileSizeMB($file){
         return (File::size($file) * .0009765625) * .0009765625;
+    }
+
+    public function getConfig($key){
+        return Config::where('name','=', $key)->first()->value;
     }
 }

@@ -58,15 +58,6 @@ class UserConfig extends React.Component{
                     </div>
 
                     <div className="form-group">
-                        <label>Username</label>
-                        <input className="form-control"
-                               name="username"
-                               value={this.state.username}
-                               onChange={this.handleInputChange.bind(this)}
-                               placeholder="Username"/>
-                    </div>
-
-                    <div className="form-group">
                         <label>Name</label>
                         <input className="form-control"
                                name="name"

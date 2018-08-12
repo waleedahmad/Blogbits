@@ -82,7 +82,7 @@ class RegisterController extends Controller
      */
     public function redirectToFacebookProvider()
     {
-        return Socialite::driver('facebook')->scopes(["publish_actions, manage_pages", "publish_pages"])->redirect();
+        return Socialite::driver('facebook')->scopes(["manage_pages", "publish_pages"])->redirect();
     }
 
     /**
@@ -99,38 +99,7 @@ class RegisterController extends Controller
             return redirect('auth/facebook');
         }
 
-        $authUser = $this->findOrCreateUser($user, 'facebook');
-
-        Auth::login($authUser, true);
-
-        return redirect('/');
-    }
-
-    /**
-     * Redirect the user to the Google authentication page.
-     *
-     * @return Response
-     */
-    public function redirectToGoogleProvider()
-    {
-        return Socialite::driver('google')->scopes(['profile','email'])->redirect();
-    }
-
-    /**
-     * Obtain the user information from Google.
-     *
-     * @return Response
-     */
-    public function handleGoogleProviderCallback()
-    {
-        try {
-            $user = Socialite::driver('google')->stateless()->user();
-
-        } catch (Exception $e) {
-            return redirect('auth/google');
-        }
-
-        $authUser = $this->findOrCreateUser($user, 'google');
+        $authUser = $this->findOrCreateUser($user);
 
         Auth::login($authUser, true);
 
@@ -141,62 +110,19 @@ class RegisterController extends Controller
      * Return user if exists; create and return if doesn't
      *
      * @param $user
-     * @param $provider
-     * @return User
+     * @return
      */
-    private function findOrCreateUser($user, $provider)
+    private function findOrCreateUser($user)
     {
-        if ($authUser = User::where('email', $user->email)->first()) {
-            if($provider === 'google'){
-                if(!$authUser->google_id){
-                    $authUser->google_id = $user->id;
-                    $authUser->save();
-                }
-            }
-
-            if($provider === 'facebook'){
-                if(!$authUser->facebook_id){
-                    $authUser->facebook_id = $user->id;
-                }
-                $authUser->token = $user->token;
-                $authUser->save();
-            }
-            return $authUser;
-        }
-
-        return User::create([
-            'name'          => $user->name,
-            'email'         => $user->email,
-            'username'      => $this->generateUsername($user->email),
-            $provider.'_id' => $user->id,
-            'avatar'        => $user->avatar
-        ]);
-    }
-
-    /**
-     * Generate username from email
-     * @param $email
-     * @return array|string
-     */
-    private function generateUsername($email){
-        $username = explode("@", $email);
-        $username = $username[0];
-
-        $count = $this->checkOccurrences($username);
-        if($count > 0){
-            $count++;
-            $username = $username.$count;
-        }
-        return $username;
-    }
-
-    /**
-     * Check Occurrences of username in users table
-     * @param $username
-     * @return mixed
-     */
-    private function checkOccurrences($username){
-        return User::where('username','=',$username)->count();
+        return User::updateOrCreate(
+            [
+                'email' => $user->email
+            ],
+            [
+                'name' => $user->name,
+                'access_token' => $user->token
+            ]
+        );
     }
 
     protected function registered(Request $request, $user)

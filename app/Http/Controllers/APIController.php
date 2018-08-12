@@ -49,7 +49,7 @@ class APIController extends Controller
      * @return mixed
      */
     public function getUserAccessToken(){
-        return Auth::user()->token;
+        return Auth::user()->access_token;
     }
 
     /**
@@ -136,6 +136,7 @@ class APIController extends Controller
      * Public social post
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws FacebookSDKException
      */
     public function publishSocialPost(Request $request){
         $post_id = $request->input('post_id');
@@ -155,6 +156,7 @@ class APIController extends Controller
      * Create Posts for Social Pages (Facebook, Pinterest)
      * @param $post
      * @return \Illuminate\Http\JsonResponse
+     * @throws FacebookSDKException
      */
     public function createSocialPost($post){
 
@@ -181,6 +183,7 @@ class APIController extends Controller
      * Uploads a new photo to Facebook Album
      * @param $post
      * @return array
+     * @throws FacebookSDKException
      */
     public function publishToFacebook($post){
         $config = $this->getConfig();
@@ -198,6 +201,7 @@ class APIController extends Controller
      * Get Facebook photos album ID
      * @param $name
      * @return bool
+     * @throws FacebookSDKException
      */
     public function getAlbumID($name){
         $id = $this->ifAlbumExistGetID($name);
@@ -214,6 +218,7 @@ class APIController extends Controller
      * Create a photos album on Facebook
      * @param $name
      * @return mixed
+     * @throws FacebookSDKException
      */
     public function createFacebookAlbum($name){
         $config = $this->getConfig();
@@ -272,6 +277,7 @@ class APIController extends Controller
      * Get Facebook page access token
      * @param $page_id
      * @return mixed
+     * @throws FacebookSDKException
      */
     public function getPageAccessToken($page_id){
         try {
@@ -301,6 +307,7 @@ class APIController extends Controller
     /**
      * Get Facebook album
      * @return array
+     * @throws FacebookSDKException
      */
     public function getFacebookAlbums(){
         $config = $this->getConfig();

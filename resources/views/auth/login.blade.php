@@ -38,15 +38,11 @@
                 <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
             </div>
 
-            <h4>Connect with social networks</h4>
+            <h4>Login with Facebook</h4>
 
             <div class="form-group">
                 <a href="{{ url('/auth/facebook') }}">
                     <button class="btn btn-default" type="button"><i class="fa fa-btn fa-facebook"></i>Facebook</button>
-                </a>
-
-                <a href="{{ url('/auth/google') }}">
-                    <button class="btn btn-default" type="button"><i class="fa fa-btn fa-google"></i>Google</button>
                 </a>
             </div>
 
