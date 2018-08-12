@@ -5,6 +5,7 @@
     <meta name="csrf_token" content="{{csrf_token()}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{mix('/assets/bundle/app.css')}}">
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="16x16">
 </head>
 <body>
 
