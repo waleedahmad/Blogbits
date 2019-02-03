@@ -16,8 +16,7 @@ class Posts extends React.Component{
             posts : [],
             count : 0,
             take : 10,
-            message : 'Loading posts',
-            loading : false,
+            message : 'Loading posts'
         };
     }
 
@@ -44,10 +43,6 @@ class Posts extends React.Component{
 
     getPosts(offset){
         this.removeScrollEvent();
-        this.setState({
-            loading : true
-        });
-
         $.ajax({
             type : 'GET',
             url : this.getApiEndPoint(this.props.location.pathname),
@@ -71,9 +66,6 @@ class Posts extends React.Component{
                             message : 'No more posts to load'
                         });
                     }
-                    this.setState({
-                        loading: false
-                    })
                 }
             }.bind(this)
 
@@ -98,25 +90,16 @@ class Posts extends React.Component{
         return null;
     }
 
-    isBottom(el) {
-        return el.getBoundingClientRect().bottom <= window.innerHeight;
-    }
-
-    trackScrolling(){
-        const wrappedElement = document.getElementById('posts');
-        if (this.isBottom(wrappedElement)) {
-            if(!this.state.loading){
-                this.getPosts(this.state.take);
-            }
-        }
-    };
-
     registerScrollEvent(){
-        document.addEventListener('scroll', this.trackScrolling.bind(this));
+        $(window).on('scroll', function() {
+            if($(window).scrollTop() + $(window).height() === $(document).height()) {
+                this.getPosts(this.state.take)
+            }
+        }.bind(this));
     }
 
     removeScrollEvent(){
-        document.removeEventListener('scroll', this.trackScrolling.bind(this));
+        $(window).off('scroll');
     }
 
     delete(id){
@@ -165,7 +148,7 @@ class Posts extends React.Component{
     render(){
 
         return (
-            <div id="posts" className="posts col-xs-12 col-sm-12 col-md-5 col-lg-4">
+            <div className="posts col-xs-12 col-sm-12 col-md-5 col-lg-4">
                 {this.state.posts.length ? this.state.posts.map(function(post){
                     return <Post key={post.id} action={'view'} post={post} delete={this.delete.bind(this)} publish={this.publish.bind(this)}/>
                 }.bind(this)) : <div className="alert alert-info">{this.state.message}</div>}
